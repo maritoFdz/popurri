@@ -7,17 +7,23 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    private float scatterTime;
-
     [Header("Entities")]
     [SerializeField] private Ghost[] ghosts;
     [SerializeField] private Pacman pacman;
     [SerializeField] private Transform bolitas;
 
+    [Header("Locations")]
+    public GameObject Door;
+    public GameObject TopLeft;
+    public GameObject TopRight;
+    public GameObject BottomLeft;
+    public GameObject BottomRight;
+
     public int Level { get; private set; }
     public int Score { get; private set; }
     public int Lifes { get; private set; }
     public float TimeSeconds { get; private set; }
+
     private const int defaultScore = 0;
     private const int defaultLifes = 3;
     private bool isGameOver;
@@ -48,19 +54,8 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         TimeSeconds += Time.deltaTime;
-        HandleGhostState();
         if (isGameOver && Input.GetKeyDown(KeyCode.KeypadEnter))
             SetGame(defaultScore, defaultLifes);
-    }
-
-    private void HandleGhostState()
-    {
-        if (Level == 0)
-        {
-            scatterTime = 7f;
-        }
-        else
-            scatterTime = 5f;
     }
 
     private void SetGame(int score, int lifes)
@@ -91,7 +86,10 @@ public class GameManager : MonoBehaviour
     private void SetGhosts()
     {
         for (int i = 0; i < ghosts.Length; i++)
+        {
+//            ghosts[i].transform.position = new Vector3(0f, 0f, 0f);
             ghosts[i].gameObject.SetActive(!isGameOver);
+        }
     }
 
     private void SetBolitas()

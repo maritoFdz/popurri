@@ -6,7 +6,7 @@ public abstract class MovingEntity : MonoBehaviour
     [Header("Movement Settings")]
     [SerializeField] protected Rigidbody2D rb;
     [SerializeField] private float speed;
-    [SerializeField] private float speedBoost = 1f;
+    public float speedBoost = 1f;
     protected Vector2 direction;
     protected Vector2 nextDirection;
 
@@ -51,7 +51,7 @@ public abstract class MovingEntity : MonoBehaviour
         rb.MovePosition(rb.position + speed * speedBoost * Time.deltaTime * direction);
     }
 
-    protected void SetDirection(Vector2 newDirection)
+    public void SetDirection(Vector2 newDirection)
     {
 
         if (CanMove(newDirection))

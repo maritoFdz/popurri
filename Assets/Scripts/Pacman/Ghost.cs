@@ -12,19 +12,19 @@ public class Ghost : MovingEntity
     public ScatterState scatterState = new();
     public ChaseState chaseState = new();
 
-    private List<Vector2> posDirections;
-    protected Vector3 targetTile;
-    private bool canChangeDir;
+    public List<Vector2> posDirections;
+    public Vector3 targetTile;
+    public bool canChangeDir;
     private IState currentState;
     [Header("Parameters")]
     [SerializeField] private int ScorePoints;
     [SerializeField] private GhostEyesAnimator ghostEyes;
-    public readonly GhostType type;
+    public GhostType type;
 
     protected override void Awake()
     {
-
         currentState = homeState;
+        currentState.EnterState(this);
         base.Awake();
         ghostEyes = GetComponentInChildren<GhostEyesAnimator>();
     }
@@ -45,10 +45,10 @@ public class Ghost : MovingEntity
     private void HandleInput()
     {
         Vector2 newDir = ChoseDirection();
-        if (newDir != -1 * direction)
+        if (newDir != Vector2.zero)
         {
-            canChangeDir = false;
             SetDirection(newDir);
+            canChangeDir = false;
         }
     }
 
@@ -56,16 +56,24 @@ public class Ghost : MovingEntity
     {
         Vector2 bestDirection = new();
         float distance = float.MaxValue;
-        foreach (Vector2 direction in posDirections)
+        foreach (Vector2 posDirection in posDirections)
         {
-            float distanceInDir = Vector3.Distance(transform.position + (Vector3) direction, targetTile);
+            if (posDirection == -1 * direction) continue;
+
+            float distanceInDir = Vector3.Distance(transform.position + (Vector3) posDirection, targetTile);
             if (distanceInDir < distance)
             {
                 distance = distanceInDir;
-                bestDirection = direction;
+                bestDirection = posDirection;
             }
         }
         return bestDirection;
+    }
+
+    public void SwitchState(IState newState)
+    {
+        currentState = newState;
+        currentState.EnterState(this);
     }
 
     protected override void AlterSprite(Vector2 direction)
@@ -73,12 +81,6 @@ public class Ghost : MovingEntity
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.TryGetComponent<Crossroad>(out var cross))
-        {
-            posDirections = cross.availableDir;
-            canChangeDir = true;
-        }
-        else
-            currentState.OnColission2DEnter(this, collision);
+        currentState.OnColission2DEnter(this, collision);
     }
 }
