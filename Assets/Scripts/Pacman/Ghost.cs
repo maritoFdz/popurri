@@ -1,25 +1,37 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum GhostType { Blinky, Pinky, Inky, Clyde};
+
 public class Ghost : MovingEntity
 {
-    private const float scatterTimeChange = 2f;
+    // states
+    public OnHomeState homeState = new();
+    public EatenState eatenState = new();
+    public FrightenedState frightenedState = new();
+    public ScatterState scatterState = new();
+    public ChaseState chaseState = new();
+
     private List<Vector2> posDirections;
     protected Vector3 targetTile;
     private bool canChangeDir;
+    private IState currentState;
     [Header("Parameters")]
     [SerializeField] private int ScorePoints;
     [SerializeField] private GhostEyesAnimator ghostEyes;
-    [SerializeField] private float scatterTime;
+    public readonly GhostType type;
 
     protected override void Awake()
     {
+
+        currentState = homeState;
         base.Awake();
         ghostEyes = GetComponentInChildren<GhostEyesAnimator>();
     }
 
     protected override void Update()
     {
+        currentState.Update(this);
         if (canChangeDir && targetTile != null)
             HandleInput();
         base.Update();
@@ -66,8 +78,7 @@ public class Ghost : MovingEntity
             posDirections = cross.availableDir;
             canChangeDir = true;
         }
+        else
+            currentState.OnColission2DEnter(this, collision);
     }
-
-    public void ChangeScatterTime()
-        => scatterTime -= scatterTimeChange;
 }
