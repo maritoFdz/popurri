@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class ScatterState : IState
 {
-    private const float timeToScatter = 5f;
+    private const float timeToScatter = 6f;
     private float time;
 
     public void EnterState(Ghost ghost)
     {
+        ghost.ghostBody.SetChaseAnim();
         time = 0f;
         ghost.speedBoost = 1f;
         switch (ghost.type)

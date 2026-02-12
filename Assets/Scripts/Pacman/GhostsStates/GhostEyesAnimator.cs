@@ -4,6 +4,8 @@ using UnityEngine;
 public class GhostEyesAnimator : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer spriteRender;
+
+    [Header("Eyes Sprites")]
     [SerializeField] private Sprite EyesDown;
     [SerializeField] private Sprite EyesUp;
     [SerializeField] private Sprite EyesRight;

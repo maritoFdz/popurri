@@ -4,6 +4,7 @@ public class EatenState : IState
 {
     public void EnterState(Ghost ghost)
     {
+        ghost.ghostBody.TurnOn();
         ghost.speedBoost = 1f;
     }
 
@@ -18,6 +19,11 @@ public class EatenState : IState
         {
             ghost.posDirections = cross.availableDir;
             ghost.canChangeDir = true;
+        }
+        else if (other.gameObject.layer == LayerMask.NameToLayer("Door"))
+        {
+            ghost.ghostBody.TurnOn();
+            ghost.SwitchState(ghost.homeState);
         }
     }
 }

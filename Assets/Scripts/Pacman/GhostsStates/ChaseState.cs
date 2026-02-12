@@ -12,10 +12,12 @@ public class ChaseState : IState
 
     public void EnterState(Ghost ghost)
     {
+        ghost.ghostBody.SetChaseAnim();
         pacman = GameManager.instance.pacman;
         blinky = GameManager.instance.Blinky;
         stateChanges++;
         ghost.speedBoost = 1f;
+        ghost.direction = -1 * ghost.direction;
         time = 0f;
     }
 

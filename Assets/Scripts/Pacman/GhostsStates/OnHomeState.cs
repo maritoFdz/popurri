@@ -4,7 +4,9 @@ public class OnHomeState : IState
 {
     public void EnterState(Ghost ghost)
     {
-        ghost.speedBoost = 0.01f;
+        ghost.ghostBody.TurnOn();
+        ghost.ghostBody.SetChaseAnim();
+        ghost.speedBoost = 0.001f;
     }
 
     public void Update(Ghost ghost)

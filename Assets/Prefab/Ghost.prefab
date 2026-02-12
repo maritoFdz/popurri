@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3040029546451169317}
   - component: {fileID: 709658743338147710}
-  - component: {fileID: 6099312390023984676}
+  - component: {fileID: 1651742086052537239}
   m_Layer: 10
   m_Name: Body
   m_TagString: Untagged
@@ -92,28 +92,29 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!95 &6099312390023984676
-Animator:
-  serializedVersion: 7
+--- !u!114 &1651742086052537239
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 572267060738676599}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: eb5797aff8e207a44acd3e962fbeb58a, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87726bd2dada1dd47be9a5023459b288, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostBodyAnimator
+  spriteRender: {fileID: 709658743338147710}
+  animSpeed: 1
+  ghostColor: {r: 1, g: 1, b: 1, a: 1}
+  Idle:
+  - {fileID: 628271541339416999, guid: 7f4c7ac28faf17d408f571acfad29761, type: 3}
+  - {fileID: -3256421571773314484, guid: c174cbffa787c6b468903aef830db28f, type: 3}
+  Frightened:
+  - {fileID: -7581581080574790302, guid: 392df653e0e8aed47b848d5a121ea9b2, type: 3}
+  - {fileID: -4033309646893196344, guid: 9a4df012f3caaa6499b1abb14fd7f979, type: 3}
+  - {fileID: 46875094029394783, guid: 449341c1a3677024586de43b2147c0a7, type: 3}
+  - {fileID: -4866370356465674644, guid: 3974c1d5f3b5f0448bd03b4760a069ea, type: 3}
 --- !u!1 &6713482312544935971
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,7 +336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ghost
   rb: {fileID: 4527241784005563905}
-  speed: 4
+  speed: 4.5
   speedBoost: 1
   direction: {x: 0, y: 0}
   wallsLayer:
@@ -348,4 +349,5 @@ MonoBehaviour:
   canChangeDir: 0
   ScorePoints: 200
   ghostEyes: {fileID: 1827753364496821379}
+  ghostBody: {fileID: 1651742086052537239}
   type: 0

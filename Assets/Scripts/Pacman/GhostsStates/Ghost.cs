@@ -18,7 +18,10 @@ public class Ghost : MovingEntity
     private IState currentState;
     [Header("Parameters")]
     [SerializeField] private int ScorePoints;
+
+    [Header("Animations")]
     [SerializeField] private GhostEyesAnimator ghostEyes;
+    public GhostBodyAnimator ghostBody;
     public GhostType type;
 
     protected override void Awake()
@@ -27,6 +30,7 @@ public class Ghost : MovingEntity
         currentState.EnterState(this);
         base.Awake();
         ghostEyes = GetComponentInChildren<GhostEyesAnimator>();
+        ghostBody = GetComponentInChildren<GhostBodyAnimator>();
     }
 
     protected override void Update()
@@ -82,9 +86,6 @@ public class Ghost : MovingEntity
     protected override void OnDrawGizmos()
     {
         base.OnDrawGizmos();
-
-        if (!Application.isPlaying) return;
-
         switch (type)
         {
             case GhostType.Blinky:
@@ -100,7 +101,6 @@ public class Ghost : MovingEntity
                 Gizmos.color = new Color(1f, 0.5f, 0f);
                 break;
         }
-
         Gizmos.DrawSphere(targetTile, 0.2f);
         Gizmos.DrawLine(transform.position, targetTile);
     }
