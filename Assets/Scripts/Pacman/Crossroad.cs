@@ -35,7 +35,7 @@ public class Crossroad : MonoBehaviour
         DrawDirection(Vector2.right);
     }
 
-    private void DrawDirection(Vector2 direction) // gracias por todo, Chatgpt
+    private void DrawDirection(Vector2 direction)
     {
         RaycastHit2D hit = Physics2D.Raycast(
             transform.position,

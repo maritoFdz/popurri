@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Entities")]
     [SerializeField] private Ghost[] ghosts;
-    [SerializeField] private Pacman pacman;
+    public Pacman pacman;
     [SerializeField] private Transform bolitas;
 
     [Header("Locations")]
@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public int Score { get; private set; }
     public int Lifes { get; private set; }
     public float TimeSeconds { get; private set; }
+    public Ghost Blinky { get; private set; }
 
     private const int defaultScore = 0;
     private const int defaultLifes = 3;
@@ -87,7 +88,9 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < ghosts.Length; i++)
         {
-//            ghosts[i].transform.position = new Vector3(0f, 0f, 0f);
+            // ghosts[i].transform.position = new Vector3(0f, 0f, 0f);
+            if (ghosts[i].type == GhostType.Blinky)
+                Blinky = ghosts[i];
             ghosts[i].gameObject.SetActive(!isGameOver);
         }
     }

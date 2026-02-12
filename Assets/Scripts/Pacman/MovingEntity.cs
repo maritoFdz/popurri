@@ -7,12 +7,12 @@ public abstract class MovingEntity : MonoBehaviour
     [SerializeField] protected Rigidbody2D rb;
     [SerializeField] private float speed;
     public float speedBoost = 1f;
-    protected Vector2 direction;
+    public Vector2 direction;
     protected Vector2 nextDirection;
 
     [Header("Walls Detection")]
     [SerializeField] private LayerMask wallsLayer;
-    [SerializeField] private float castDistance; // lo puse publico porque me sirve de referencia para la ubicacion donde se deben poner los fantasmas
+    [SerializeField] private float castDistance;
     [SerializeField] private float boxSizeFactor;
     protected Vector3 startPos;
     private Vector2 boxSize;
@@ -71,7 +71,7 @@ public abstract class MovingEntity : MonoBehaviour
         return inFront.collider == null;
     }
 
-    private void OnDrawGizmos()
+    protected virtual void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
 

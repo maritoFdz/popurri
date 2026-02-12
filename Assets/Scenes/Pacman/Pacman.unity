@@ -11987,8 +11987,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerPacman
   rb: {fileID: 2075184755}
-  speed: 6
+  speed: 5
   speedBoost: 1
+  direction: {x: 0, y: 0}
   wallsLayer:
     serializedVersion: 2
     m_Bits: 128

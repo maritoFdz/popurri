@@ -2,22 +2,13 @@ using UnityEngine;
 
 public class ScatterState : IState
 {
+    private const float timeToScatter = 5f;
+    private float time;
+
     public void EnterState(Ghost ghost)
     {
+        time = 0f;
         ghost.speedBoost = 1f;
-    }
-
-    public void OnColission2DEnter(Ghost ghost, Collider2D other)
-    {
-        if (other.gameObject.TryGetComponent<Crossroad>(out var cross))
-        {
-            ghost.posDirections = cross.availableDir;
-            ghost.canChangeDir = true;
-        }
-    }
-
-    public void Update(Ghost ghost)
-    {
         switch (ghost.type)
         {
             case GhostType.Blinky:
@@ -32,6 +23,22 @@ public class ScatterState : IState
             case GhostType.Clyde:
                 ghost.targetTile = GameManager.instance.BottomLeft.transform.position;
                 break;
+        }
+    }
+
+    public void Update(Ghost ghost)
+    {
+        time += Time.deltaTime;
+        if (time >= timeToScatter)
+            ghost.SwitchState(ghost.chaseState);
+    }
+
+    public void OnColission2DEnter(Ghost ghost, Collider2D other)
+    {
+        if (other.gameObject.TryGetComponent<Crossroad>(out var cross))
+        {
+            ghost.posDirections = cross.availableDir;
+            ghost.canChangeDir = true;
         }
     }
 }

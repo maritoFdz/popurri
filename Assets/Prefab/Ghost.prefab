@@ -335,8 +335,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ghost
   rb: {fileID: 4527241784005563905}
-  speed: 6
+  speed: 4
   speedBoost: 1
+  direction: {x: 0, y: 0}
   wallsLayer:
     serializedVersion: 2
     m_Bits: 128
