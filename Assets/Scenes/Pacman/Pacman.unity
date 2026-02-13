@@ -12126,10 +12126,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c975460ea644d3041857ce74c25a42da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerPacman
+  direction: {x: 0, y: 0}
   rb: {fileID: 2075184755}
   speed: 5
-  speedBoost: 1
-  direction: {x: 0, y: 0}
   wallsLayer:
     serializedVersion: 2
     m_Bits: 128

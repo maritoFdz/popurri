@@ -9,7 +9,7 @@ public class EatenState : IState
     {
         hasTouchedDoor = false;
         ghost.ghostBody.TurnOff();
-        ghost.speedBoost = 1.2f;
+        ghost.SetSpeedBost(1.2f);
     }
 
     public void Update(Ghost ghost)
@@ -31,10 +31,10 @@ public class EatenState : IState
     private IEnumerator DoorAnimCo(Ghost ghost)
     {
         hasTouchedDoor = true;
-        ghost.direction = Vector2.down;
+        ghost.SetDirection(Vector2.down, true);
         yield return new WaitForSeconds(0.1f);
         ghost.ghostBody.TurnOn();
-        ghost.direction = Vector2.up;
+        ghost.SetDirection(Vector2.up, true);
         yield return new WaitForSeconds(0.1f);
         ghost.SetDirection(Vector2.right);
         ghost.SwitchState(ghost.scatterState);

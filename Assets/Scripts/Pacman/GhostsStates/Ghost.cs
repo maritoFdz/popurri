@@ -51,7 +51,7 @@ public class Ghost : MovingEntity
         return ScorePoints;
     }
 
-    private void HandleInput()
+    protected override void HandleInput()
     {
         Vector2 newDir = ChoseDirection();
         if (newDir != Vector2.zero)

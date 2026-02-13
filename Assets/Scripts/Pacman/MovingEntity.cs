@@ -3,33 +3,36 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public abstract class MovingEntity : MonoBehaviour
 {
+    private float speedBoost;
+    public Vector2 direction;
+    protected Vector2 nextDirection;
+    protected Vector3 startPos;
+    private Vector2 boxSize;
+    protected Vector2 initialDirection;
+    protected bool canMove;
+
     [Header("Movement Settings")]
     [SerializeField] protected Rigidbody2D rb;
     [SerializeField] private float speed;
-    public float speedBoost = 1f;
-    public Vector2 direction;
-    protected Vector2 nextDirection;
 
     [Header("Walls Detection")]
     [SerializeField] private LayerMask wallsLayer;
     [SerializeField] private float castDistance;
     [SerializeField] private float boxSizeFactor;
-    protected Vector3 startPos;
-    private Vector2 boxSize;
-    protected readonly Vector2 initialDirection = Vector2.right;
-    protected bool canMove;
+
+    protected abstract void HandleInput();
+    protected abstract void AlterSprite(Vector2 direction);
 
     protected virtual void Awake()
     {
+        initialDirection = Vector2.right;
         startPos = transform.position;
         boxSize = Vector2.one * boxSizeFactor;
         rb = GetComponent<Rigidbody2D>();
     }
 
     private void Start()
-    {
-        ResetEntity();
-    }
+        => ResetEntity();
 
     protected virtual void Update()
     {
@@ -49,13 +52,17 @@ public abstract class MovingEntity : MonoBehaviour
     }
 
     private void HandleMovement()
+        => rb.MovePosition(rb.position + speed * speedBoost * Time.deltaTime * direction);
+
+    private bool CanTakeDir(Vector2 direction)
     {
-        rb.MovePosition(rb.position + speed * speedBoost * Time.deltaTime * direction);
+        RaycastHit2D inFront = Physics2D.BoxCast(rb.position, boxSize, 0f, direction, castDistance, wallsLayer);
+        return inFront.collider == null;
     }
 
-    public void SetDirection(Vector2 newDirection)
+    public void SetDirection(Vector2 newDirection, bool isForced = false)
     {
-        if (CanTakeDir(newDirection))
+        if (CanTakeDir(newDirection) || isForced)
         {
             direction = newDirection;
             AlterSprite(direction);
@@ -64,19 +71,14 @@ public abstract class MovingEntity : MonoBehaviour
         else nextDirection = newDirection;
     }
 
-    private bool CanTakeDir(Vector2 direction)
-    {
-        RaycastHit2D inFront = Physics2D.BoxCast(rb.position, boxSize, 0f, direction, castDistance, wallsLayer);
-        return inFront.collider == null;
-    }
+    public void SetSpeedBost(float speedBost)
+    => this.speedBoost = speedBost;
 
     public void Freeze()
         => canMove = false;
 
     public void Unfreeze()
         => canMove = true;
-
-    protected abstract void AlterSprite(Vector2 direction);
 
     protected virtual void OnDrawGizmos()
     {

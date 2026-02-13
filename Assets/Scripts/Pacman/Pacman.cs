@@ -16,7 +16,7 @@ public class Pacman : MovingEntity
         base.Update();
     }
 
-    private void HandleInput()
+    protected override void HandleInput()
     {
         if (Input.GetKeyDown(KeyCode.DownArrow)) SetDirection(Vector2.down);
         else if (Input.GetKeyDown(KeyCode.LeftArrow)) SetDirection(Vector2.left);

@@ -10,7 +10,8 @@ public class ScatterState : IState
         ghost.ghostBody.TurnOn();
         ghost.ghostBody.SetChaseAnim();
         time = 0f;
-        ghost.speedBoost = 1f;
+        ghost.SetSpeedBost(1f);
+
         switch (ghost.type)
         {
             case GhostType.Blinky:
@@ -42,7 +43,7 @@ public class ScatterState : IState
             ghost.posDirections = cross.availableDir;
             ghost.canChangeDir = true;
         }
-        else if (other.gameObject.TryGetComponent<Pacman>(out var pacman))
+        else if (other.GetComponent<Pacman>() != null)
             GameManager.instance.KillPacman();
     }
 }

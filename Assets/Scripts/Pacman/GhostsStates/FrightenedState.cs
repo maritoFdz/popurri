@@ -11,7 +11,7 @@ public class FrightenedState : IState
         ghost.targetTile = GameManager.instance.Door.transform.position;
         ghost.ghostBody.SetFrightenedAnim();
         time = 0f;
-        ghost.speedBoost = 1f;
+        ghost.SetSpeedBost(1f);
     }
 
     public void Update(Ghost ghost)
@@ -33,7 +33,7 @@ public class FrightenedState : IState
             ghost.posDirections = cross.availableDir;
             ghost.canChangeDir = true;
         }
-        else if (other.gameObject.TryGetComponent<Pacman>(out var pacman))
+        else if (other.GetComponent<Pacman>() != null)
         {
             GameManager.instance.PacmanEatsGhost(ghost);
             ghost.SwitchState(ghost.eatenState);

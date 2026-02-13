@@ -6,7 +6,7 @@ public class OnHomeState : IState
     {
         ghost.ghostBody.TurnOn();
         ghost.ghostBody.SetChaseAnim();
-        ghost.speedBoost = 0.001f;
+        ghost.SetSpeedBost(0.00001f);
     }
 
     public void Update(Ghost ghost)

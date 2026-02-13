@@ -16,7 +16,7 @@ public class ChaseState : IState
         pacman = GameManager.instance.pacman;
         blinky = GameManager.instance.Blinky;
         stateChanges++;
-        ghost.speedBoost = 1f;
+        ghost.SetSpeedBost(1f);
         ghost.SetDirection(-1 * ghost.direction);
         time = 0f;
     }
@@ -57,7 +57,7 @@ public class ChaseState : IState
             ghost.posDirections = cross.availableDir;
             ghost.canChangeDir = true;
         }
-        else if (other.gameObject.TryGetComponent<Pacman>(out var pacman))
+        else if (other.GetComponent<Pacman>() != null)
             GameManager.instance.KillPacman();
     }
 }
