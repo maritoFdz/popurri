@@ -189,12 +189,4 @@ public class GameManager : MonoBehaviour
             ghost.Freeze();
         pacman.Freeze();
     }
-
-    //public void UnFreezeAll()
-    //{
-    //    foreach (Ghost ghost in ghosts)
-    //        ghost.Unfreeze();
-    //    pacman.Unfreeze();
-    //}
-
 }

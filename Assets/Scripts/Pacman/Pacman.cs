@@ -25,8 +25,5 @@ public class Pacman : MovingEntity
     }
 
     protected override void AlterSprite(Vector2 direction)
-    {
-        float dirAngle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        rb.rotation = dirAngle;
-    }
+        => rb.rotation = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 }
