@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class ChaseState : IState
 {
-    private const float clydeDistance = 4f;
-    private const float timeToChase = 20f;
+    private const float clydeDistance = 3f;
+    private const float timeToChase = 25f;
     private const int maxStateChanges = 4;
     private float time;
     private int stateChanges;
@@ -17,7 +17,7 @@ public class ChaseState : IState
         blinky = GameManager.instance.Blinky;
         stateChanges++;
         ghost.speedBoost = 1f;
-        ghost.direction = -1 * ghost.direction;
+        ghost.SetDirection(-1 * ghost.direction);
         time = 0f;
     }
 
@@ -30,7 +30,7 @@ public class ChaseState : IState
                 ghost.targetTile = pacmanPos;
                 break;
             case GhostType.Pinky:
-                ghost.targetTile = pacmanPos + (Vector3) (2 * pacman.direction);
+                ghost.targetTile = pacmanPos + (Vector3) (1.5f * pacman.direction);
                 break;
             case GhostType.Inky:
                 Vector3 blinkyPos = blinky.transform.position; // A
@@ -57,5 +57,7 @@ public class ChaseState : IState
             ghost.posDirections = cross.availableDir;
             ghost.canChangeDir = true;
         }
+        else if (other.gameObject.TryGetComponent<Pacman>(out var pacman))
+            GameManager.instance.KillPacman();
     }
 }

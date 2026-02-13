@@ -24,8 +24,13 @@ public class Ghost : MovingEntity
     public GhostBodyAnimator ghostBody;
     public GhostType type;
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip frightenedClip;
+
     protected override void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
         currentState = homeState;
         currentState.EnterState(this);
         base.Awake();
@@ -104,7 +109,6 @@ public class Ghost : MovingEntity
         Gizmos.DrawSphere(targetTile, 0.2f);
         Gizmos.DrawLine(transform.position, targetTile);
     }
-
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

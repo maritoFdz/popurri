@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class FrightenedState : IState
 {
-    private const float timeToFrightened = 20f;
+    private const float timeToFrightened = 7f;
     private float time;
 
     public void EnterState(Ghost ghost)
     {
+        ghost.SetDirection(-1 * ghost.direction);
+        ghost.targetTile = GameManager.instance.Door.transform.position;
         ghost.ghostBody.SetFrightenedAnim();
         time = 0f;
         ghost.speedBoost = 1f;
@@ -14,7 +16,14 @@ public class FrightenedState : IState
 
     public void Update(Ghost ghost)
     {
-
+        if (!ghost.audioSource.isPlaying)
+            ghost.audioSource.PlayOneShot(ghost.frightenedClip);
+        time += Time.deltaTime;
+        if (time >= timeToFrightened)
+        {
+            ghost.audioSource.Stop();
+            ghost.SwitchState(ghost.scatterState);
+        }
     }
 
     public void OnColission2DEnter(Ghost ghost, Collider2D other)
@@ -23,6 +32,11 @@ public class FrightenedState : IState
         {
             ghost.posDirections = cross.availableDir;
             ghost.canChangeDir = true;
+        }
+        else if (other.gameObject.TryGetComponent<Pacman>(out var pacman))
+        {
+            GameManager.instance.PacmanEatsGhost(ghost);
+            ghost.SwitchState(ghost.eatenState);
         }
     }
 }

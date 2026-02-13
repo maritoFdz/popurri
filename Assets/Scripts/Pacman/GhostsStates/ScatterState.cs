@@ -2,11 +2,12 @@ using UnityEngine;
 
 public class ScatterState : IState
 {
-    private const float timeToScatter = 6f;
+    private const float timeToScatter = 5f;
     private float time;
 
     public void EnterState(Ghost ghost)
     {
+        ghost.ghostBody.TurnOn();
         ghost.ghostBody.SetChaseAnim();
         time = 0f;
         ghost.speedBoost = 1f;
@@ -41,5 +42,7 @@ public class ScatterState : IState
             ghost.posDirections = cross.availableDir;
             ghost.canChangeDir = true;
         }
+        else if (other.gameObject.TryGetComponent<Pacman>(out var pacman))
+            GameManager.instance.KillPacman();
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -91,6 +90,7 @@ public class GameManager : MonoBehaviour
             // ghosts[i].transform.position = new Vector3(0f, 0f, 0f);
             if (ghosts[i].type == GhostType.Blinky)
                 Blinky = ghosts[i];
+            ghosts[i].Unfreeze();
             ghosts[i].gameObject.SetActive(!isGameOver);
         }
     }
@@ -132,6 +132,11 @@ public class GameManager : MonoBehaviour
         bolita.gameObject.SetActive(false);
         MakeBolitaSound();
         CheckWin();
+        foreach (Ghost ghost in ghosts)
+        {
+            ghost.audioSource.Pause();
+            ghost.SwitchState(ghost.frightenedState);
+        }
     }
 
     private void MakeBolitaSound()
@@ -145,12 +150,19 @@ public class GameManager : MonoBehaviour
 
     public void PacmanEatsGhost(Ghost ghost)
     {
+        audioSource.PlayOneShot(ghostEatenSound);
         Score += ghost.GetPoints();
     }
 
     public void PacmanEatsFruit()
     {
         // despues
+    }
+
+    public void KillPacman()
+    {
+        FreezeAll();
+        StartCoroutine(PacmanDies());
     }
 
     public IEnumerator PacmanDies()
@@ -170,4 +182,19 @@ public class GameManager : MonoBehaviour
         if (Lifes == 0) SetGameOver();
         else StartCoroutine(ResetGameCo());
     }
+
+    public void FreezeAll()
+    {
+        foreach (Ghost ghost in ghosts)
+            ghost.Freeze();
+        pacman.Freeze();
+    }
+
+    //public void UnFreezeAll()
+    //{
+    //    foreach (Ghost ghost in ghosts)
+    //        ghost.Unfreeze();
+    //    pacman.Unfreeze();
+    //}
+
 }

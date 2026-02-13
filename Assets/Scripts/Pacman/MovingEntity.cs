@@ -17,6 +17,7 @@ public abstract class MovingEntity : MonoBehaviour
     protected Vector3 startPos;
     private Vector2 boxSize;
     protected readonly Vector2 initialDirection = Vector2.right;
+    protected bool canMove;
 
     protected virtual void Awake()
     {
@@ -30,21 +31,22 @@ public abstract class MovingEntity : MonoBehaviour
         ResetEntity();
     }
 
+    protected virtual void Update()
+    {
+        if (!canMove) return;
+        if (nextDirection != Vector2.zero) SetDirection(nextDirection);
+        HandleMovement();
+    }
+
     public virtual void ResetEntity()
     {
+        Unfreeze();
         speedBoost = 1f;
         direction = initialDirection;
         AlterSprite(direction);
         nextDirection = Vector2.zero;
         transform.position = startPos;
     }
-
-    protected virtual void Update()
-    {
-        if (nextDirection != Vector2.zero) SetDirection(nextDirection);
-        HandleMovement();
-    }
-
 
     private void HandleMovement()
     {
@@ -53,8 +55,7 @@ public abstract class MovingEntity : MonoBehaviour
 
     public void SetDirection(Vector2 newDirection)
     {
-
-        if (CanMove(newDirection))
+        if (CanTakeDir(newDirection))
         {
             direction = newDirection;
             AlterSprite(direction);
@@ -63,13 +64,19 @@ public abstract class MovingEntity : MonoBehaviour
         else nextDirection = newDirection;
     }
 
-    protected abstract void AlterSprite(Vector2 direction);
-
-    private bool CanMove(Vector2 direction)
+    private bool CanTakeDir(Vector2 direction)
     {
         RaycastHit2D inFront = Physics2D.BoxCast(rb.position, boxSize, 0f, direction, castDistance, wallsLayer);
         return inFront.collider == null;
     }
+
+    public void Freeze()
+        => canMove = false;
+
+    public void Unfreeze()
+        => canMove = true;
+
+    protected abstract void AlterSprite(Vector2 direction);
 
     protected virtual void OnDrawGizmos()
     {
