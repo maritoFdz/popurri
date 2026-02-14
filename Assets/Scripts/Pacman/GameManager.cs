@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -26,6 +25,7 @@ public class GameManager : MonoBehaviour
 
     private const int defaultScore = 0;
     private const int defaultLifes = 3;
+    private const int defaultLevel = 1;
     private bool isGameOver;
     private AudioSource audioSource;
 
@@ -48,8 +48,20 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        // create method that plays the starting game music and shows ready text
-        SetGame(defaultScore, defaultLifes);
+        SetGame(defaultScore, defaultLifes, defaultLevel);
+        StartCoroutine(WaitMusicCo(startMusic));
+    }
+
+    private IEnumerator WaitMusicCo(AudioClip music)
+    {
+        pacman.anim.speed = 0;
+        PacmanUI.instance.ShowReadyText(true);
+        FreezeAll();
+        audioSource.PlayOneShot(music);
+        yield return new WaitWhile(()=>audioSource.isPlaying);
+        PacmanUI.instance.ShowReadyText(false);
+        UnfreezeAll();
+        pacman.anim.speed = 1;
     }
 
     private void Update()
@@ -57,17 +69,18 @@ public class GameManager : MonoBehaviour
         lastPelletTime += Time.deltaTime;
         if (isGameOver && Input.GetKeyDown(KeyCode.KeypadEnter))
         {
-            isGameOver = false;
-            SetGame(defaultScore, defaultLifes);
+            PacmanUI.instance.ShowRestartText(false);
+            SetGame(defaultScore, defaultLifes, defaultLevel);
         }
     }
 
-    private void SetGame(int score, int lifes)
+    private void SetGame(int score, int lifes, int level)
     {
-        PacmanUI.instance.UpdateLevel(++Level);
-        isGameOver = false;
+        Level = level;
         Score = score;
         Lifes = lifes;
+        PacmanUI.instance.UpdateLevel(Level);
+        isGameOver = false;
         SetPellets();
         SetGhosts(true);
         SetPacman();
@@ -99,20 +112,19 @@ public class GameManager : MonoBehaviour
     private void SetGameOver()
     {
         isGameOver = true;
-        // show game over press enter to restart text
         SetPellets();
         SetGhosts(false);
         SetPacman();
+        PacmanUI.instance.ShowRestartText(true);
     }
 
     private void CheckWin()
     {
         foreach (Transform pellet in pellets)
             if (pellet.gameObject.activeSelf) return;
-        // freeze all for a moment
-        audioSource.PlayOneShot(intermissionMusic);
-        // freeze all until music stops and show ready text
-        SetGame(Score, Lifes);
+        Level++;
+        SetGame(Score, Lifes, Level);
+        StartCoroutine(WaitMusicCo(intermissionMusic));
     }
 
     // In game events
@@ -137,7 +149,6 @@ public class GameManager : MonoBehaviour
             return;
         audioSource.PlayOneShot(pelletEatenSound);
         lastPelletTime = 0;
-        CheckWin();
     }
 
     public void PacmanEatsGhost(Ghost ghost)
@@ -205,5 +216,12 @@ public class GameManager : MonoBehaviour
         foreach (Ghost ghost in ghosts)
             ghost.Freeze();
         pacman.Freeze();
+    }
+
+    public void UnfreezeAll()
+    {
+        foreach (Ghost ghost in ghosts)
+            ghost.Unfreeze();
+        pacman.Unfreeze();
     }
 }

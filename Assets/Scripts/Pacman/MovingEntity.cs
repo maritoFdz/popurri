@@ -31,9 +31,6 @@ public abstract class MovingEntity : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    private void Start()
-        => ResetEntity();
-
     protected virtual void Update()
     {
         if (!canMove) return;

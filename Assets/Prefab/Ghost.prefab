@@ -441,7 +441,6 @@ MonoBehaviour:
     m_Bits: 128
   castDistance: 0.3
   boxSizeFactor: 0.2
-  posDirections: []
   targetTile: {x: 0, y: 0, z: 0}
   canChangeDir: 0
   ScorePoints: 200
