@@ -9,9 +9,7 @@ public class PacmanUI : MonoBehaviour
     [SerializeField] private SpriteRenderer[] pacmanLifes;
 
     private void Awake()
-    {
-        instance = this;
-    }
+        => instance = this;
 
     public void UpdateScore(int score)
         => playerScore.text = score.ToString();
