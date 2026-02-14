@@ -12474,11 +12474,66 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2094257979}
   m_CullTransparentMesh: 1
+--- !u!1 &2111938212
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2111938214}
+  - component: {fileID: 2111938213}
+  m_Layer: 0
+  m_Name: FruitGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2111938213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2111938212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 263c45150cfe49f4da0de1cbf9a18719, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FruitGenerator
+  fruitPrefab: {fileID: 6006252918435951796, guid: cc2f057be9d86924cb8a5386319dd02c, type: 3}
+  spawnPoint: {x: 0, y: -2.2345002, z: 0}
+  cherrySprite: {fileID: -256182486513637855, guid: 105832816659b6d4f9c15dafda5a3286, type: 3}
+  strawbSprite: {fileID: -4113970610265177591, guid: ce88c5aaf4adc3547a2a07751fba68d7, type: 3}
+  orangeSprite: {fileID: -7584112862828507880, guid: 52d3375ecbb6fdd41bf3e5d90353f497, type: 3}
+  appleSprite: {fileID: -845319021071624217, guid: 6193d6ff6a91ce045b04d08c00d1f71e, type: 3}
+  melonSprite: {fileID: 4195889023723883367, guid: ccd01f4f41256054f85a1c73760f391d, type: 3}
+  bellSprite: {fileID: -5873491287801354548, guid: b6194856d882c2048a870001aae51de5, type: 3}
+  galaxSprite: {fileID: 7370473096878648485, guid: 179151cc5314bca4793020189c9e318f, type: 3}
+  keySprite: {fileID: 1852353669034138504, guid: 872f32c322d637c4d92bd640f2b2a982, type: 3}
+--- !u!4 &2111938214
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2111938212}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.27033, y: -1.89046, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 458890420}
+  - {fileID: 2111938214}
   - {fileID: 1052129402}
   - {fileID: 1799705328}
   - {fileID: 2075184751}

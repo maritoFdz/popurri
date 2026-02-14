@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -22,9 +21,11 @@ public class GameManager : MonoBehaviour
     private int level;
     private int score;
     private int lifes;
+    private int pelletsEaten;
     private Ghost blinky;
 
     private const int extraLifeCap = 10000;
+    private const int fruitCap = 170;
     private const int defaultScore = 0;
     private const int defaultLifes = 3;
     private const int defaultLevel = 1;
@@ -93,7 +94,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator ResetGameCo()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(3);
         SetGhosts(true);
         SetPacman();
     }
@@ -160,6 +161,9 @@ public class GameManager : MonoBehaviour
     // In game events
     public void PacmanEatsPellet(Pellet pellet)
     {
+        pelletsEaten++;
+        if (pelletsEaten % fruitCap == 0)
+            FruitGenerator.instance.Generate(level);
         score += pellet.GetPoints();
         PacmanUI.instance.UpdateScore(score);
         pellet.gameObject.SetActive(false);
@@ -182,9 +186,12 @@ public class GameManager : MonoBehaviour
         PacmanUI.instance.UpdateScore(score);
     }
 
-    public void PacmanEatsFruit()
+    public void PacmanEatsFruit(Fruit fruit)
     {
-        // despues
+        score += fruit.GetScore();
+        audioSource.PlayOneShot(fruitEatenSound);
+        CheckExtraLife();
+        PacmanUI.instance.UpdateScore(score);
     }
 
     public void KillPacman()
