@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         lastPelletTime += Time.deltaTime;
-        if (isGameOver && Input.GetKeyDown(KeyCode.KeypadEnter))
+        if (isGameOver && Input.GetKeyDown(KeyCode.Return))
         {
             PacmanUI.instance.ShowRestartText(false);
             SetGame(defaultScore, defaultLifes, defaultLevel);
@@ -79,6 +79,8 @@ public class GameManager : MonoBehaviour
         Level = level;
         Score = score;
         Lifes = lifes;
+        PacmanUI.instance.UpdateLifes(Lifes);
+        PacmanUI.instance.UpdateScore(Score);
         PacmanUI.instance.UpdateLevel(Level);
         isGameOver = false;
         SetPellets();
