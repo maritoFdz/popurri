@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -132,26 +133,19 @@ public class GameManager : MonoBehaviour
     }
 
     // Events (public methods) 
-    public void PacmanEatsSmallBolita(SmallBolita bolita) // esto se debe mejorar fula haciendo una clase abstracta o algo deso
+    public void PacmanEatsPellet(Pellet pellet)
     {
-        Score += bolita.ScorePoints;
+        Score += pellet.GetPoints();
         PacmanUI.instance.UpdateScore(Score);
-        bolita.gameObject.SetActive(false);
+        pellet.gameObject.SetActive(false);
         MakeBolitaSound();
         CheckWin();
-    }
-
-    public void PacmanEatsBigBolita(BolitaBig bolita)
-    {
-        Score += bolita.ScorePoints;
-        bolita.gameObject.SetActive(false);
-        MakeBolitaSound();
-        CheckWin();
-        foreach (Ghost ghost in ghosts)
-        {
-            ghost.audioSource.Pause();
-            ghost.SwitchState(ghost.frightenedState);
-        }
+        if (pellet.isPowerPellet)
+            foreach (Ghost ghost in ghosts)
+            {
+                ghost.audioSource.Pause();
+                ghost.SwitchState(ghost.frightenedState);
+            }
     }
 
     private void MakeBolitaSound()

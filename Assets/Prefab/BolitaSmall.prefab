@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8027792940437770440}
   - component: {fileID: 3628885551571077757}
-  - component: {fileID: 914276656303222048}
   - component: {fileID: -5063103940927906668}
+  - component: {fileID: 2578032431478820952}
   m_Layer: 8
   m_Name: BolitaSmall
   m_TagString: Untagged
@@ -80,18 +80,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.2, y: 0.2}
   m_EdgeRadius: 0
---- !u!114 &914276656303222048
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6820637305178252329}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea6ea881799912042b8eefc70fa45c3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SmallBolita
 --- !u!212 &-5063103940927906668
 SpriteRenderer:
   serializedVersion: 2
@@ -151,3 +139,18 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &2578032431478820952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6820637305178252329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 815fcfb0c3c58d64c9457b5a91cf01dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Pellet
+  pelletPoints: 10
+  powerPelletPoints: 50
+  isPowerPellet: 0

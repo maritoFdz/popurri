@@ -7,7 +7,7 @@ public class ChaseState : IState
     private const float timeToChase = 25f;
     private const int maxStateChanges = 4;
     private float time;
-    private int stateChanges;
+    public int stateChanges;
     private Vector3 blinkyPos;
     private Vector3 pacmanPos;
     private Vector2 pacmanDir;

@@ -48,6 +48,13 @@ public class Ghost : MovingEntity
         base.Update();
     }
 
+    public override void ResetEntity()
+    {
+        currentState = homeState;
+        chaseState.stateChanges = 0;
+        base.ResetEntity();
+    }
+
     protected override void HandleInput()
     {
         Vector2 newDir = ChoseDirection();
