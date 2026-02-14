@@ -64,6 +64,7 @@ public class GameManager : MonoBehaviour
 
     private void SetGame(int score, int lifes)
     {
+        PacmanUI.instance.UpdateLevel(++Level);
         isGameOver = false;
         Score = score;
         Lifes = lifes;

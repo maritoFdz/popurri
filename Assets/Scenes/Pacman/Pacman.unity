@@ -6394,6 +6394,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PacmanUI
   playerScore: {fileID: 2094257981}
+  readyText: {fileID: 162984812}
+  restartText: {fileID: 79566353}
+  playerLevelText: {fileID: 242157405}
   pacmanLifes:
   - {fileID: 1300078482}
   - {fileID: 1373262433}
