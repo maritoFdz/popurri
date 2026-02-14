@@ -1,17 +1,22 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class PacmanUI : MonoBehaviour
 {
     private const float flashTime = 0.5f;
+    private const float distanceLifes = 0.48f;
+    private readonly List<GameObject> currentLifes = new();
+
     public static PacmanUI instance;
 
     [SerializeField] private TextMeshProUGUI playerScore;
     [SerializeField] private TextMeshProUGUI readyText;
     [SerializeField] private TextMeshProUGUI restartText;
     [SerializeField] private TextMeshProUGUI playerLevelText;
-    [SerializeField] private SpriteRenderer[] pacmanLifes;
+    [SerializeField] private Vector3 pacmanLifesSpot;
+    [SerializeField] private GameObject pacmanLife;
 
     private void Awake()
         => instance = this;
@@ -21,10 +26,16 @@ public class PacmanUI : MonoBehaviour
 
     public void UpdateLifes(int lifes)
     {
+        foreach (GameObject life in currentLifes)
+            Destroy(life);
+
+        Vector3 pos = pacmanLifesSpot;
         for (int i = 0; i < lifes; i++)
-            pacmanLifes[i].gameObject.SetActive(true);
-        for (int i = lifes; i < pacmanLifes.Length; i++)
-            pacmanLifes[i].gameObject.SetActive(false);
+        {
+            GameObject life = Instantiate(pacmanLife, pos, Quaternion.identity);
+            currentLifes.Add(life);
+            pos.x += distanceLifes;
+        }
     }
 
     public void UpdateLevel(int level)

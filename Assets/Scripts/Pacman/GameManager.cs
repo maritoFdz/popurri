@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -18,11 +19,12 @@ public class GameManager : MonoBehaviour
     public GameObject BottomLeft;
     public GameObject BottomRight;
 
-    private int Level;
-    private int Score;
-    private int Lifes;
+    private int level;
+    private int score;
+    private int lifes;
     private Ghost blinky;
 
+    private const int extraLifeCap = 10000;
     private const int defaultScore = 0;
     private const int defaultLifes = 3;
     private const int defaultLevel = 1;
@@ -52,18 +54,6 @@ public class GameManager : MonoBehaviour
         StartCoroutine(WaitMusicCo(startMusic));
     }
 
-    private IEnumerator WaitMusicCo(AudioClip music)
-    {
-        pacman.anim.speed = 0;
-        PacmanUI.instance.ShowReadyText(true);
-        FreezeAll();
-        audioSource.PlayOneShot(music);
-        yield return new WaitWhile(()=>audioSource.isPlaying);
-        PacmanUI.instance.ShowReadyText(false);
-        UnfreezeAll();
-        pacman.anim.speed = 1;
-    }
-
     private void Update()
     {
         lastPelletTime += Time.deltaTime;
@@ -74,16 +64,36 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private IEnumerator WaitMusicCo(AudioClip music)
+    {
+        pacman.anim.speed = 0;
+        FreezeAll();
+        yield return new WaitForSeconds(1);
+        PacmanUI.instance.ShowReadyText(true);
+        audioSource.PlayOneShot(music);
+        yield return new WaitWhile(()=>audioSource.isPlaying);
+        PacmanUI.instance.ShowReadyText(false);
+        UnfreezeAll();
+        pacman.anim.speed = 1;
+    }
+
     private void SetGame(int score, int lifes, int level)
     {
-        Level = level;
-        Score = score;
-        Lifes = lifes;
-        PacmanUI.instance.UpdateLifes(Lifes);
-        PacmanUI.instance.UpdateScore(Score);
-        PacmanUI.instance.UpdateLevel(Level);
+        this.level = level;
+        this.score = score;
+        this.lifes = lifes;
+        PacmanUI.instance.UpdateLifes(this.lifes);
+        PacmanUI.instance.UpdateScore(this.score);
+        PacmanUI.instance.UpdateLevel(this.level);
         isGameOver = false;
         SetPellets();
+        SetGhosts(true);
+        SetPacman();
+    }
+
+    private IEnumerator ResetGameCo()
+    {
+        yield return new WaitForSeconds(3f);
         SetGhosts(true);
         SetPacman();
     }
@@ -124,25 +134,19 @@ public class GameManager : MonoBehaviour
     {
         foreach (Transform pellet in pellets)
             if (pellet.gameObject.activeSelf) return;
-        Level++;
-        SetGame(Score, Lifes, Level);
+        level++;
+        SetGame(score, lifes, level);
         StartCoroutine(WaitMusicCo(intermissionMusic));
     }
 
-    // In game events
-    public void PacmanEatsPellet(Pellet pellet)
+    private void CheckExtraLife()
     {
-        Score += pellet.GetPoints();
-        PacmanUI.instance.UpdateScore(Score);
-        pellet.gameObject.SetActive(false);
-        MakePelletSound();
-        CheckWin();
-        if (pellet.isPowerPellet)
-            foreach (Ghost ghost in ghosts)
-            {
-                ghost.audioSource.Pause();
-                ghost.SwitchState(ghost.frightenedState);
-            }
+        if (score % extraLifeCap == 0)
+        {
+            lifes++;
+            audioSource.PlayOneShot(extraPacSound);
+            PacmanUI.instance.UpdateLifes(lifes);
+        }
     }
 
     private void MakePelletSound()
@@ -153,11 +157,29 @@ public class GameManager : MonoBehaviour
         lastPelletTime = 0;
     }
 
+    // In game events
+    public void PacmanEatsPellet(Pellet pellet)
+    {
+        score += pellet.GetPoints();
+        PacmanUI.instance.UpdateScore(score);
+        pellet.gameObject.SetActive(false);
+        MakePelletSound();
+        CheckExtraLife();
+        CheckWin();
+        if (pellet.isPowerPellet)
+            foreach (Ghost ghost in ghosts)
+            {
+                ghost.audioSource.Pause();
+                ghost.SwitchState(ghost.frightenedState);
+            }
+    }
+
     public void PacmanEatsGhost(Ghost ghost)
     {
         audioSource.PlayOneShot(ghostEatenSound);
-        Score += ghost.ScorePoints;
-        PacmanUI.instance.UpdateScore(Score);
+        score += ghost.ScorePoints;
+        CheckExtraLife();
+        PacmanUI.instance.UpdateScore(score);
     }
 
     public void PacmanEatsFruit()
@@ -184,18 +206,11 @@ public class GameManager : MonoBehaviour
 
     public void PacmanDeathEnd()
     {
-        Lifes--;
-        PacmanUI.instance.UpdateLifes(Lifes);
+        lifes--;
+        PacmanUI.instance.UpdateLifes(lifes);
         pacman.gameObject.SetActive(false);
-        if (Lifes == 0) SetGameOver();
+        if (lifes == 0) SetGameOver();
         else StartCoroutine(ResetGameCo());
-    }
-
-    private IEnumerator ResetGameCo() // set Ready! text
-    {
-        yield return new WaitForSeconds(3f);
-        SetGhosts(true);
-        SetPacman();
     }
 
     public Vector3 GetPacmanPos()
