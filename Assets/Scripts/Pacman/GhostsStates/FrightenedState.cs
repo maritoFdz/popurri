@@ -26,14 +26,9 @@ public class FrightenedState : IState
         }
     }
 
-    public void OnColission2DEnter(Ghost ghost, Collider2D other)
+    public void OnColission2DEnter(Ghost ghost, Collider2D collision)
     {
-        if (other.gameObject.TryGetComponent<Crossroad>(out var cross))
-        {
-            ghost.posDirections = cross.availableDir;
-            ghost.canChangeDir = true;
-        }
-        else if (other.GetComponent<Pacman>() != null)
+        if (collision.GetComponent<Pacman>() != null)
         {
             GameManager.instance.PacmanEatsGhost(ghost);
             ghost.SwitchState(ghost.eatenState);

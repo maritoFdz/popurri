@@ -7,6 +7,7 @@ public class EatenState : IState
 
     public void EnterState(Ghost ghost)
     {
+        ghost.targetTile = GameManager.instance.Door.transform.position;
         hasTouchedDoor = false;
         ghost.ghostBody.TurnOff();
         ghost.SetSpeedBost(1.2f);
@@ -14,17 +15,12 @@ public class EatenState : IState
 
     public void Update(Ghost ghost)
     {
-        ghost.targetTile = GameManager.instance.Door.transform.position;
+        return;
     }
 
-    public void OnColission2DEnter(Ghost ghost, Collider2D other)
+    public void OnColission2DEnter(Ghost ghost, Collider2D collision)
     {
-        if (other.gameObject.TryGetComponent<Crossroad>(out var cross))
-        {
-            ghost.posDirections = cross.availableDir;
-            ghost.canChangeDir = true;
-        }
-        else if (other.gameObject.layer == LayerMask.NameToLayer("DoorFront") && !hasTouchedDoor)
+        if (collision.gameObject.layer == LayerMask.NameToLayer("DoorFront") && !hasTouchedDoor)
             ghost.StartCoroutine(DoorAnimCo(ghost));
     }
 

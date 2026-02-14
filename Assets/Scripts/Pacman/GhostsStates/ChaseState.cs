@@ -3,18 +3,18 @@ using UnityEngine;
 public class ChaseState : IState
 {
     private const float clydeDistance = 3f;
+    private const float pinkyDistance = 1.5f;
     private const float timeToChase = 25f;
     private const int maxStateChanges = 4;
     private float time;
     private int stateChanges;
-    private Pacman pacman;
-    private Ghost blinky;
+    private Vector3 blinkyPos;
+    private Vector3 pacmanPos;
+    private Vector2 pacmanDir;
 
     public void EnterState(Ghost ghost)
     {
         ghost.ghostBody.SetChaseAnim();
-        pacman = GameManager.instance.pacman;
-        blinky = GameManager.instance.Blinky;
         stateChanges++;
         ghost.SetSpeedBost(1f);
         ghost.SetDirection(-1 * ghost.direction);
@@ -23,25 +23,25 @@ public class ChaseState : IState
 
     public void Update(Ghost ghost)
     {
-        Vector3 pacmanPos = pacman.transform.position;
+        blinkyPos = GameManager.instance.GetBlinkyPos();
+        pacmanPos = GameManager.instance.GetPacmanPos();
+        pacmanDir = GameManager.instance.GetPacmanDir();
         switch (ghost.type)
         {
             case GhostType.Blinky:
                 ghost.targetTile = pacmanPos;
                 break;
             case GhostType.Pinky:
-                ghost.targetTile = pacmanPos + (Vector3) (1.5f * pacman.direction);
+                ghost.targetTile = pacmanPos + (Vector3) (pinkyDistance * pacmanDir);
                 break;
             case GhostType.Inky:
-                Vector3 blinkyPos = blinky.transform.position; // A
-                Vector3 pacmanFront = pacmanPos + (Vector3) pacman.direction; // B
+                Vector3 pacmanFront = pacmanPos + (Vector3) pacmanDir;
                 ghost.targetTile = 2 * pacmanFront - blinkyPos;
                 break;
             case GhostType.Clyde:
                 if (Vector3.Distance(pacmanPos, ghost.transform.position) >= clydeDistance)
                     ghost.targetTile = pacmanPos;
-                else
-                    ghost.targetTile = GameManager.instance.BottomLeft.transform.position;
+                else ghost.targetTile = GameManager.instance.BottomLeft.transform.position;
                 break;
         }
 
@@ -50,14 +50,9 @@ public class ChaseState : IState
             ghost.SwitchState(ghost.scatterState);
     }
 
-    public void OnColission2DEnter(Ghost ghost, Collider2D other)
+    public void OnColission2DEnter(Ghost ghost, Collider2D collision)
     {
-        if (other.gameObject.TryGetComponent<Crossroad>(out var cross))
-        {
-            ghost.posDirections = cross.availableDir;
-            ghost.canChangeDir = true;
-        }
-        else if (other.GetComponent<Pacman>() != null)
+        if (collision.GetComponent<Pacman>() != null)
             GameManager.instance.KillPacman();
     }
 }

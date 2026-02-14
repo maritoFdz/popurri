@@ -12,12 +12,14 @@ public class Ghost : MovingEntity
     public ScatterState scatterState = new();
     public ChaseState chaseState = new();
 
-    public List<Vector2> posDirections;
+    // properties
+    private List<Vector2> posDirections;
     public Vector3 targetTile;
     public bool canChangeDir;
     private IState currentState;
-    [Header("Parameters")]
-    [SerializeField] private int ScorePoints;
+
+    [Header("Score")]
+    public int ScorePoints;
 
     [Header("Animations")]
     [SerializeField] private GhostEyesAnimator ghostEyes;
@@ -33,9 +35,9 @@ public class Ghost : MovingEntity
         audioSource = GetComponent<AudioSource>();
         currentState = homeState;
         currentState.EnterState(this);
-        base.Awake();
         ghostEyes = GetComponentInChildren<GhostEyesAnimator>();
         ghostBody = GetComponentInChildren<GhostBodyAnimator>();
+        base.Awake();
     }
 
     protected override void Update()
@@ -44,11 +46,6 @@ public class Ghost : MovingEntity
         if (canChangeDir && targetTile != null)
             HandleInput();
         base.Update();
-    }
-
-    public int GetPoints()
-    {
-        return ScorePoints;
     }
 
     protected override void HandleInput()
@@ -60,6 +57,9 @@ public class Ghost : MovingEntity
             canChangeDir = false;
         }
     }
+
+    protected override void AlterSprite(Vector2 direction)
+        => ghostEyes.LookInDirection(direction);
 
     private Vector2 ChoseDirection()
     {
@@ -85,33 +85,20 @@ public class Ghost : MovingEntity
         currentState.EnterState(this);
     }
 
-    protected override void AlterSprite(Vector2 direction)
-        => ghostEyes.LookInDirection(direction);
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.TryGetComponent<Crossroad>(out var cross))
+        {
+            posDirections = cross.availableDir;
+            canChangeDir = true;
+        }
+        currentState.OnColission2DEnter(this, collision);
+    }
 
     protected override void OnDrawGizmos()
     {
-        base.OnDrawGizmos();
-        switch (type)
-        {
-            case GhostType.Blinky:
-                Gizmos.color = Color.red;
-                break;
-            case GhostType.Pinky:
-                Gizmos.color = Color.magenta;
-                break;
-            case GhostType.Inky:
-                Gizmos.color = Color.cyan;
-                break;
-            case GhostType.Clyde:
-                Gizmos.color = new Color(1f, 0.5f, 0f);
-                break;
-        }
-        Gizmos.DrawSphere(targetTile, 0.2f);
+        Gizmos.color = ghostBody.GetColor();
+        Gizmos.DrawWireSphere(targetTile, 0.2f);
         Gizmos.DrawLine(transform.position, targetTile);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        currentState.OnColission2DEnter(this, collision);
     }
 }

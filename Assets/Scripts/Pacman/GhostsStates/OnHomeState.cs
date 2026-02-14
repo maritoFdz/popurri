@@ -10,13 +10,11 @@ public class OnHomeState : IState
     }
 
     public void Update(Ghost ghost)
-    {
-        ghost.targetTile = GameManager.instance.Door.transform.position;
-    }
+        => ghost.targetTile = GameManager.instance.Door.transform.position;
 
-    public void OnColission2DEnter(Ghost ghost, Collider2D other)
+    public void OnColission2DEnter(Ghost ghost, Collider2D collision)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Crossroads"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Crossroads"))
             ghost.SetDirection(Vector2.up);
         else
             ghost.SwitchState(ghost.scatterState);

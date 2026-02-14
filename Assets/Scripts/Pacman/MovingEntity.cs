@@ -83,7 +83,6 @@ public abstract class MovingEntity : MonoBehaviour
     protected virtual void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-
         Vector3 origin = transform.position;
         Vector3 end = origin + (Vector3)(direction * castDistance);
         Gizmos.DrawWireCube(origin, boxSize);

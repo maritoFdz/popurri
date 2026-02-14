@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Entities")]
     [SerializeField] private Ghost[] ghosts;
-    public Pacman pacman;
+    [SerializeField] private Pacman pacman;
     [SerializeField] private Transform bolitas;
 
     [Header("Locations")]
@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     public int Score { get; private set; }
     public int Lifes { get; private set; }
     public float TimeSeconds { get; private set; }
-    public Ghost Blinky { get; private set; }
+    private Ghost Blinky;
 
     private const int defaultScore = 0;
     private const int defaultLifes = 3;
@@ -56,6 +56,21 @@ public class GameManager : MonoBehaviour
         TimeSeconds += Time.deltaTime;
         if (isGameOver && Input.GetKeyDown(KeyCode.KeypadEnter))
             SetGame(defaultScore, defaultLifes);
+    }
+
+    public Vector3 GetPacmanPos()
+    {
+        return pacman.transform.position;
+    }
+
+    public Vector3 GetPacmanDir()
+    {
+        return pacman.direction;
+    }
+
+    public Vector3 GetBlinkyPos()
+    {
+        return Blinky.transform.position;
     }
 
     private void SetGame(int score, int lifes)
@@ -151,7 +166,7 @@ public class GameManager : MonoBehaviour
     public void PacmanEatsGhost(Ghost ghost)
     {
         audioSource.PlayOneShot(ghostEatenSound);
-        Score += ghost.GetPoints();
+        Score += ghost.ScorePoints;
     }
 
     public void PacmanEatsFruit()

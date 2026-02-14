@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ScatterState : IState
 {
-    private const float timeToScatter = 5f;
+    private const float timeToScatter = 4.5f;
     private float time;
 
     public void EnterState(Ghost ghost)
@@ -36,14 +36,9 @@ public class ScatterState : IState
             ghost.SwitchState(ghost.chaseState);
     }
 
-    public void OnColission2DEnter(Ghost ghost, Collider2D other)
+    public void OnColission2DEnter(Ghost ghost, Collider2D collision)
     {
-        if (other.gameObject.TryGetComponent<Crossroad>(out var cross))
-        {
-            ghost.posDirections = cross.availableDir;
-            ghost.canChangeDir = true;
-        }
-        else if (other.GetComponent<Pacman>() != null)
+        if (collision.GetComponent<Pacman>() != null)
             GameManager.instance.KillPacman();
     }
 }

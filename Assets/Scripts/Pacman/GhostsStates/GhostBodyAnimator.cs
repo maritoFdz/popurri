@@ -15,9 +15,7 @@ public class GhostBodyAnimator : MonoBehaviour
     [SerializeField] private Sprite[] Frightened;
 
     private void Awake()
-    {
-        spriteRender = GetComponent<SpriteRenderer>();
-    }
+        => spriteRender = GetComponent<SpriteRenderer>();
 
     public void SetChaseAnim()
     {
@@ -26,6 +24,12 @@ public class GhostBodyAnimator : MonoBehaviour
             StopCoroutine(currentAnim);
 
         currentAnim = StartCoroutine(PlayAnimCo(Idle));
+    }
+    public void SetFrightenedAnim()
+    {
+        spriteRender.color = Color.white;
+        if (currentAnim != null) StopCoroutine(currentAnim);
+        currentAnim = StartCoroutine(PlayAnimCo(Frightened));
     }
 
     private IEnumerator PlayAnimCo(Sprite[] sprites)
@@ -40,13 +44,9 @@ public class GhostBodyAnimator : MonoBehaviour
         }
     }
 
-    public void SetFrightenedAnim()
+    public Color GetColor()
     {
-        spriteRender.color = Color.white;
-        if (currentAnim != null)
-            StopCoroutine(currentAnim);
-
-        currentAnim = StartCoroutine(PlayAnimCo(Frightened));
+        return ghostColor;
     }
 
     public void TurnOff()
