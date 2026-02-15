@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
@@ -31,34 +30,20 @@ public class GameManager : MonoBehaviour
     private const int defaultLifes = 3;
     private const int defaultLevel = 1;
     private bool isGameOver;
-    private AudioSource audioSource;
-
-    [Header("Sound Effects and Music")]
-    [SerializeField] private AudioClip startMusic;
-    [SerializeField] private AudioClip pelletEatenSound;
-    [SerializeField] private AudioClip ghostEatenSound;
-    [SerializeField] private AudioClip pacmanDeathSound;
-    [SerializeField] private AudioClip fruitEatenSound;
-    [SerializeField] private AudioClip extraPacSound;
-    [SerializeField] private AudioClip intermissionMusic;
-    private const float pelletSoundCooldown = 0.5f;
-    private float lastPelletTime;
 
     private void Awake()                                    
     {
         instance = this;
-        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
     {
         SetGame(defaultScore, defaultLifes, defaultLevel);
-        StartCoroutine(WaitMusicCo(startMusic));
+        StartCoroutine(WaitMusicCo(SoundType.StartMusic));
     }
 
     private void Update()
     {
-        lastPelletTime += Time.deltaTime;
         if (isGameOver && Input.GetKeyDown(KeyCode.Return))
         {
             PacmanUI.instance.ShowRestartText(false);
@@ -66,19 +51,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
-    {
-        Debug.Log(pelletsEaten);
-    }
-
-    private IEnumerator WaitMusicCo(AudioClip music)
+    private IEnumerator WaitMusicCo(SoundType sound)
     {
         pacman.anim.speed = 0;
         FreezeAll();
         yield return new WaitForSeconds(1);
         PacmanUI.instance.ShowReadyText(true);
-        audioSource.PlayOneShot(music);
-        yield return new WaitWhile(()=>audioSource.isPlaying);
+        SoundManager.instance.PlaySound(sound);
+        yield return new WaitWhile(()=>SoundManager.instance.IsPlaying());
         PacmanUI.instance.ShowReadyText(false);
         UnfreezeAll();
         pacman.anim.speed = 1;
@@ -147,7 +127,7 @@ public class GameManager : MonoBehaviour
         if (pelletsEaten != amountOfpellets) return;
         level++;
         SetGame(score, lifes, level);
-        StartCoroutine(WaitMusicCo(intermissionMusic));
+        StartCoroutine(WaitMusicCo(SoundType.IntermissionMusic));
     }
 
     private void CheckExtraLife()
@@ -155,17 +135,9 @@ public class GameManager : MonoBehaviour
         if (score % extraLifeCap == 0)
         {
             lifes++;
-            audioSource.PlayOneShot(extraPacSound);
+            SoundManager.instance.PlaySound(SoundType.ExtraLife);
             PacmanUI.instance.UpdateLifes(lifes);
         }
-    }
-
-    private void MakePelletSound()
-    {
-        if (lastPelletTime < pelletSoundCooldown)
-            return;
-        audioSource.PlayOneShot(pelletEatenSound);
-        lastPelletTime = 0;
     }
 
     // In game events
@@ -177,7 +149,7 @@ public class GameManager : MonoBehaviour
         score += pellet.GetPoints();
         PacmanUI.instance.UpdateScore(score);
         pellet.gameObject.SetActive(false);
-        MakePelletSound();
+        SoundManager.instance.PlaySound(SoundType.PelletEaten);
         CheckExtraLife();
         CheckWin();
         if (pellet.isPowerPellet)
@@ -190,7 +162,7 @@ public class GameManager : MonoBehaviour
 
     public void PacmanEatsGhost(Ghost ghost)
     {
-        audioSource.PlayOneShot(ghostEatenSound);
+        SoundManager.instance.PlaySound(SoundType.GhostEaten);
         score += ghost.ScorePoints;
         CheckExtraLife();
         PacmanUI.instance.UpdateScore(score);
@@ -199,7 +171,7 @@ public class GameManager : MonoBehaviour
     public void PacmanEatsFruit(Fruit fruit)
     {
         score += fruit.GetScore();
-        audioSource.PlayOneShot(fruitEatenSound);
+        SoundManager.instance.PlaySound(SoundType.FruitEaten);
         CheckExtraLife();
         PacmanUI.instance.UpdateScore(score);
     }
@@ -216,7 +188,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         foreach (Ghost ghost in ghosts)
             ghost.gameObject.SetActive(false);
-        audioSource.PlayOneShot(pacmanDeathSound);
+        SoundManager.instance.PlaySound(SoundType.PacmanDeath);
         pacman.anim.speed = 1;
         pacman.anim.SetTrigger("TouchGhost");
     }
