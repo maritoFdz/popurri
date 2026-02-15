@@ -22,7 +22,8 @@ public class SoundManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (instance != null) Destroy(instance);
+        else instance = this;
     }
 
     private void Update()

@@ -19,7 +19,10 @@ public class PacmanUI : MonoBehaviour
     [SerializeField] private GameObject pacmanLife;
 
     private void Awake()
-        => instance = this;
+    {
+        if (instance != null) Destroy(instance);
+        else instance = this;
+    }
 
     public void UpdateScore(int score)
         => playerScore.text = score.ToString();

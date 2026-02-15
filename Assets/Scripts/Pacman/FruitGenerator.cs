@@ -25,7 +25,8 @@ public class FruitGenerator : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (instance != null) Destroy(instance);
+        else instance = this;
         fruits = new Dictionary<FruitType, (int, Sprite)>{
             { FruitType.Cherry, (100, cherrySprite) },
             { FruitType.Strawberry, (300, strawbSprite) },
