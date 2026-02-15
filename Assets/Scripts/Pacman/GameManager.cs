@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     private int score;
     private int lifes;
     private int pelletsEaten;
+    private int amountOfpellets;
     private Ghost blinky;
 
     private const int extraLifeCap = 10000;
@@ -65,6 +66,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        Debug.Log(pelletsEaten);
+    }
+
     private IEnumerator WaitMusicCo(AudioClip music)
     {
         pacman.anim.speed = 0;
@@ -80,6 +86,7 @@ public class GameManager : MonoBehaviour
 
     private void SetGame(int score, int lifes, int level)
     {
+        pelletsEaten = 0;
         this.level = level;
         this.score = score;
         this.lifes = lifes;
@@ -112,8 +119,12 @@ public class GameManager : MonoBehaviour
 
     private void SetPellets()
     {
+        amountOfpellets = 0;
         foreach (Transform pellet in pellets)
+        {
+            amountOfpellets++;
             pellet.gameObject.SetActive(!isGameOver);
+        }
     }
 
     private void SetPacman()
@@ -132,9 +143,8 @@ public class GameManager : MonoBehaviour
     }
 
     private void CheckWin()
-    {
-        foreach (Transform pellet in pellets)
-            if (pellet.gameObject.activeSelf) return;
+    {   
+        if (pelletsEaten != amountOfpellets) return;
         level++;
         SetGame(score, lifes, level);
         StartCoroutine(WaitMusicCo(intermissionMusic));
