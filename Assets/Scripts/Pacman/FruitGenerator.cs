@@ -1,70 +1,48 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-public enum FruitType { Cherry, Strawberry, Orange, Apple, Melon, Galaxian, Bell, Key }
 
 public class FruitGenerator : MonoBehaviour
 {
     public static FruitGenerator instance;
     private bool fruitSpawned;
-    private Dictionary<FruitType, (int score, Sprite sprite)> fruits;
 
+    [Header("Fruits Data")]
     [SerializeField] private Fruit fruitPrefab;
+    [SerializeField] private FruitData cherry;
+    [SerializeField] private FruitData strawberry;
+    [SerializeField] private FruitData orange;
+    [SerializeField] private FruitData apple;
+    [SerializeField] private FruitData melon;
+    [SerializeField] private FruitData galaxian;
+    [SerializeField] private FruitData bell;
+    [SerializeField] private FruitData key;
     [SerializeField] private Vector3 spawnPoint;
-
-    [Header("Fruits Sprites")]
-    [SerializeField] private Sprite cherrySprite;
-    [SerializeField] private Sprite strawbSprite;
-    [SerializeField] private Sprite orangeSprite;
-    [SerializeField] private Sprite appleSprite;
-    [SerializeField] private Sprite melonSprite;
-    [SerializeField] private Sprite bellSprite;
-    [SerializeField] private Sprite galaxSprite;
-    [SerializeField] private Sprite keySprite;
 
     private void Awake()
     {
         if (instance != null) Destroy(instance);
         else instance = this;
-        fruits = new Dictionary<FruitType, (int, Sprite)>{
-            { FruitType.Cherry, (100, cherrySprite) },
-            { FruitType.Strawberry, (300, strawbSprite) },
-            { FruitType.Orange, (500, orangeSprite) },
-            { FruitType.Apple, (700, appleSprite) },
-            { FruitType.Melon, (1000, melonSprite) },
-            { FruitType.Galaxian, (2000, galaxSprite) },
-            { FruitType.Bell, (3000, bellSprite) },
-            { FruitType.Key, (5000, keySprite) }
-        };
     }
 
     public void Generate(int level)
     {
-        if (!fruitSpawned)
+        if (fruitSpawned)
+            return;
+        FruitData data = level switch
         {
-            FruitType type = SelectType(level);
-            (int score, Sprite sprite) = fruits[type];
-            Fruit fruit = Instantiate(fruitPrefab, spawnPoint, Quaternion.identity);
-            fruit.SetFruit(score, sprite);
-            fruitSpawned = true;
-            StartCoroutine(DestroyFruit(fruit));
-        }
-    }
-
-    private FruitType SelectType(int level)
-    {
-        return level switch
-        {
-            1 => FruitType.Cherry,
-            2 => FruitType.Strawberry,
-            3 => FruitType.Orange,
-            4 => FruitType.Apple,
-            5 => FruitType.Melon,
-            6 => FruitType.Galaxian,
-            7 => FruitType.Bell,
-            _ => FruitType.Key,
+            1 => cherry,
+            2 => strawberry,
+            3 or 4 => orange,
+            5 or 6 => apple,
+            7 or 8 => melon,
+            9 or 10 => galaxian,
+            11 or 12 => bell,
+            _ => key,
         };
+        Fruit currentFruit = Instantiate(fruitPrefab, spawnPoint, Quaternion.identity);
+        currentFruit.SetFruit(data);
+        fruitSpawned = true;
+        StartCoroutine(DestroyFruit(currentFruit));
     }
 
     private IEnumerator DestroyFruit(Fruit fruit)

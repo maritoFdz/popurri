@@ -12549,15 +12549,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FruitGenerator
   fruitPrefab: {fileID: 6006252918435951796, guid: cc2f057be9d86924cb8a5386319dd02c, type: 3}
+  cherry: {fileID: 11400000, guid: f84b2dc9bad024442a9168ac2170b9a3, type: 2}
+  strawberry: {fileID: 11400000, guid: 78530b928d18b91448935c434eea3290, type: 2}
+  orange: {fileID: 11400000, guid: e82d4a88e86887f4f93e80d614ec0b2d, type: 2}
+  apple: {fileID: 11400000, guid: 1882f74feaaba0141b30831ec3abb8af, type: 2}
+  melon: {fileID: 11400000, guid: 97a6b3c6445e82e449bd3783a64ec409, type: 2}
+  galaxian: {fileID: 11400000, guid: 009edc01bdb898346ba30b6a1b628966, type: 2}
+  bell: {fileID: 11400000, guid: b93bae7d0dfe518458c1bb037ad993e2, type: 2}
+  key: {fileID: 11400000, guid: 3192e1896ff650d449cc1ffe1ba820b3, type: 2}
   spawnPoint: {x: 0, y: -2.2345002, z: 0}
-  cherrySprite: {fileID: -256182486513637855, guid: 105832816659b6d4f9c15dafda5a3286, type: 3}
-  strawbSprite: {fileID: -4113970610265177591, guid: ce88c5aaf4adc3547a2a07751fba68d7, type: 3}
-  orangeSprite: {fileID: -7584112862828507880, guid: 52d3375ecbb6fdd41bf3e5d90353f497, type: 3}
-  appleSprite: {fileID: -845319021071624217, guid: 6193d6ff6a91ce045b04d08c00d1f71e, type: 3}
-  melonSprite: {fileID: 4195889023723883367, guid: ccd01f4f41256054f85a1c73760f391d, type: 3}
-  bellSprite: {fileID: -5873491287801354548, guid: b6194856d882c2048a870001aae51de5, type: 3}
-  galaxSprite: {fileID: 7370473096878648485, guid: 179151cc5314bca4793020189c9e318f, type: 3}
-  keySprite: {fileID: 1852353669034138504, guid: 872f32c322d637c4d92bd640f2b2a982, type: 3}
 --- !u!4 &2111938214
 Transform:
   m_ObjectHideFlags: 0

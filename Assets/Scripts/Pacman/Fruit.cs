@@ -2,21 +2,18 @@ using UnityEngine;
 
 public class Fruit : MonoBehaviour
 {
-    private int score;
-    private SpriteRenderer spriteRenderer;
+    private FruitData data;
+    [SerializeField] private SpriteRenderer spriteRenderer;
 
-    private void Awake()
-        => spriteRenderer = GetComponent<SpriteRenderer>();
-
-    public void SetFruit(int score, Sprite sprite)
+    public void SetFruit(FruitData data)
     {
-        this.score = score;
-        spriteRenderer.sprite = sprite;
+        this.data = data;
+        spriteRenderer.sprite = data.sprite;
     }
 
     public int GetScore()
     { 
-        return score;
+        return data.score;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
