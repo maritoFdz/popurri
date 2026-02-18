@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.XR;
 
 public class Board : MonoBehaviour
 {
@@ -21,6 +23,7 @@ public class Board : MonoBehaviour
     [SerializeField] private TetraminoData O;
 
     [SerializeField] private float fallTime;
+    private float fallMultiplier;
     private float fallTimer;
     private Tetramino currentTetra;
     private TetraminoData[,] grid;
@@ -34,6 +37,7 @@ public class Board : MonoBehaviour
         grid = new TetraminoData[width, height];
         offsetX = -width / 2;
         offsetY = -height / 2;
+        fallMultiplier = 1;
     }
 
     private void Start()
@@ -45,13 +49,23 @@ public class Board : MonoBehaviour
     private void Update()
     {
         if (currentTetra == null) return;
-        
+        HandleInput();
         fallTimer += Time.deltaTime;
-        if (fallTimer >= fallTime)
+        if (fallTimer >= fallTime * fallMultiplier)
         {
             fallTimer = 0;
             TryMoveDown(currentTetra);
         }
+    }
+
+    private void HandleInput()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+            TryMoveHorizontal(currentTetra, -1);
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+            TryMoveHorizontal(currentTetra, 1);
+
+        fallMultiplier = Input.GetKey(KeyCode.DownArrow) ? 0.1f : 1;
     }
 
     private void TryMoveDown(Tetramino currentTetra)
@@ -61,6 +75,15 @@ public class Board : MonoBehaviour
         else
             PlaceTetramino(currentTetra, currentTetra.pos.x, currentTetra.pos.y);
         DrawBoard();
+    }
+
+    private void TryMoveHorizontal(Tetramino currentTetra, int direction)
+    {
+        if (CanPlace(currentTetra, currentTetra.pos.x + direction, currentTetra.pos.y))
+        {
+            currentTetra.pos.x += direction;
+            DrawBoard();
+        }
     }
 
     public void SpawnPiece(TetraminoData data)
