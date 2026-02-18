@@ -10,6 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 75ea068bfead2e64f8aee21e516407c7, type: 3}
-  m_Name: red
-  m_EditorClassIdentifier: Assembly-CSharp::Tetramino
-  tile: {fileID: 11400000, guid: a852d06fb22592e4ca553d68dd83e43c, type: 2}
+  m_Name: TretaminoI
+  m_EditorClassIdentifier: Assembly-CSharp::TetraminoData
+  Tile: {fileID: 11400000, guid: d67c7e18f04ec4849afaf1523f84ec58, type: 2}
+  TetraminoShape:
+  - {x: -1, y: 0}
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
+  - {x: 2, y: 0}

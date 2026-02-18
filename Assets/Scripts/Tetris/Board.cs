@@ -12,14 +12,14 @@ public class Board : MonoBehaviour
     [SerializeField] private Tilemap tilemap;
     [SerializeField] private Tile empty;
 
-    //[Header("FOR TESTING ONLY (will be erased)")]
-    //[SerializeField] private TetraminoData cyan;
-    //[SerializeField] private TetraminoData green;
-    //[SerializeField] private TetraminoData magenta;
-    //[SerializeField] private TetraminoData purple;
-    //[SerializeField] private TetraminoData red;
-    //[SerializeField] private TetraminoData turquoise;
-    //[SerializeField] private TetraminoData yellow;
+    [Header("FOR TESTING ONLY (will be erased)")]
+    [SerializeField] private TetraminoData L;
+    [SerializeField] private TetraminoData LInverted;
+    [SerializeField] private TetraminoData Z;
+    [SerializeField] private TetraminoData ZInverted;
+    [SerializeField] private TetraminoData I;
+    [SerializeField] private TetraminoData T;
+    [SerializeField] private TetraminoData O;
 
     private TetraminoData[,] grid;
     private int offsetX;
