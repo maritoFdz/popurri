@@ -5,10 +5,12 @@ public class Tetramino
 {
     public TetraminoData data;
     public Vector2Int[] Rotation { get; private set; }
+    public Vector2Int pos;
 
-    public Tetramino(TetraminoData newData)
+    public Tetramino(TetraminoData newData, Vector2Int pos)
     {
         data = newData;
+        this.pos = pos;
         Rotation = new Vector2Int[data.TetraminoShape.Length];
         Array.Copy(data.TetraminoShape, Rotation, data.TetraminoShape.Length);
     }

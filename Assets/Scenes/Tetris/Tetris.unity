@@ -159,6 +159,7 @@ MonoBehaviour:
   I: {fileID: 11400000, guid: a94dcbe39a1ef644e8860685caad496c, type: 2}
   T: {fileID: 11400000, guid: 36df68d834ad4e240ada71570f159b1d, type: 2}
   O: {fileID: 11400000, guid: 2d5ff54dd6a81c241a8936a51429fbe4, type: 2}
+  fallTime: 0.5
 --- !u!4 &281670971
 Transform:
   m_ObjectHideFlags: 0
