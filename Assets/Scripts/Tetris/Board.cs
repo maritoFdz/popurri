@@ -1,7 +1,5 @@
-using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.XR;
 
 public class Board : MonoBehaviour
 {
@@ -13,14 +11,8 @@ public class Board : MonoBehaviour
     [SerializeField] private Tilemap tilemap;
     [SerializeField] private Tile empty;
 
-    [Header("FOR TESTING ONLY (will be erased)")]
-    [SerializeField] private TetraminoData L;
-    [SerializeField] private TetraminoData LInverted;
-    [SerializeField] private TetraminoData Z;
-    [SerializeField] private TetraminoData ZInverted;
-    [SerializeField] private TetraminoData I;
-    [SerializeField] private TetraminoData T;
-    [SerializeField] private TetraminoData O;
+
+
 
     [SerializeField] private float fallTime;
     private float fallMultiplier;
@@ -42,8 +34,8 @@ public class Board : MonoBehaviour
 
     private void Start()
     {
+        TetraminoSpawner.instance.SpawnTetra();
         DrawBoard();
-        SpawnPiece(T);
     }
 
     private void Update()
@@ -56,6 +48,11 @@ public class Board : MonoBehaviour
             fallTimer = 0;
             TryMoveDown(currentTetra);
         }
+    }
+
+    public void SetCurrentTetra(Tetramino currentTetra)
+    {
+        this.currentTetra = currentTetra;
     }
 
     private void HandleInput()
@@ -86,12 +83,6 @@ public class Board : MonoBehaviour
         }
     }
 
-    public void SpawnPiece(TetraminoData data)
-    {
-        currentTetra = new(data, new(width / 2, height - 1));
-        DrawBoard();
-    }
-
     private void DrawBoard()
     {
         for (int y = 0; y < height; y++)
@@ -110,7 +101,8 @@ public class Board : MonoBehaviour
         {
             int x = currentTetra.pos.x + block.x;
             int y = currentTetra.pos.y + block.y;
-            SetTileInGrid(x, y, currentTetra.data.Tile);
+            if (x >= 0 && x < width && y >= 0 && y < height)
+                SetTileInGrid(x, y, currentTetra.data.Tile);
         }
     }
 
@@ -130,6 +122,12 @@ public class Board : MonoBehaviour
 
                 grid[x, y] = tetra.data;
             }
+        TetraminoSpawner.instance.SpawnTetra();
+    }
+
+    public Vector2Int GetBoardDimensions()
+    {
+        return new(width / 2, height - 1);
     }
 
     private bool CanPlace(Tetramino tetra, int xPos, int yPos)
