@@ -151,14 +151,7 @@ MonoBehaviour:
   width: 10
   height: 20
   tilemap: {fileID: 1245409955}
-  empty: {fileID: 0}
-  cyan: {fileID: 11400000, guid: 9735933bbfd690041b26b77ccb1090c9, type: 2}
-  green: {fileID: 11400000, guid: e83f7c036cd764a4584f74e5fb0326f3, type: 2}
-  magenta: {fileID: 11400000, guid: a97a913f06f5cc84abce912325afda97, type: 2}
-  purple: {fileID: 11400000, guid: 740997a6b6c77e741ae9ae05a2a9f201, type: 2}
-  red: {fileID: 11400000, guid: 2a8f4ce6ba0cb4c409ed5ccbdbc8c49a, type: 2}
-  turquoise: {fileID: 11400000, guid: 5067b71a38461d74e8d6173d03e499b1, type: 2}
-  yellow: {fileID: 11400000, guid: 66ec81fa4233dc84a9c5f615afd2bbc1, type: 2}
+  empty: {fileID: 11400000, guid: a3216f755b065da498d5f3fea3e7aabb, type: 2}
 --- !u!4 &281670971
 Transform:
   m_ObjectHideFlags: 0

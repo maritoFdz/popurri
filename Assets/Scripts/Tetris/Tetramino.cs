@@ -1,13 +1,24 @@
+using System;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
-[CreateAssetMenu(fileName = "New Tetramino", menuName = "Scriptable Objects/Tetramino")]
-public class Tetramino : ScriptableObject
+public class Tetramino : MonoBehaviour
 {
-    [SerializeField] private Tile tile;
+    public TetraminoData data;
+    private Vector2Int[] rotation;
 
-    public Tile GetTile()
+    private void Awake()
     {
-        return tile;
+        rotation = new Vector2Int[data.TetraminoShape.Length];
+        Array.Copy(data.TetraminoShape, rotation, data.TetraminoShape.Length);
+    }
+
+    public void Rotate() // always right to left rotation
+    {
+        for (int i = 0; i < rotation.Length; i++)
+        {
+            int x = rotation[i].x;
+            int y = rotation[i].y;
+            rotation[i] = new Vector2Int(-y, x);
+        }
     }
 }

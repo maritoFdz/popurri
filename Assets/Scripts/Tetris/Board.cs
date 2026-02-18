@@ -12,22 +12,22 @@ public class Board : MonoBehaviour
     [SerializeField] private Tilemap tilemap;
     [SerializeField] private Tile empty;
 
-    [Header("FOR TESTING ONLY (will be erased)")]
-    [SerializeField] private Tetramino cyan;
-    [SerializeField] private Tetramino green;
-    [SerializeField] private Tetramino magenta;
-    [SerializeField] private Tetramino purple;
-    [SerializeField] private Tetramino red;
-    [SerializeField] private Tetramino turquoise;
-    [SerializeField] private Tetramino yellow;
+    //[Header("FOR TESTING ONLY (will be erased)")]
+    //[SerializeField] private TetraminoData cyan;
+    //[SerializeField] private TetraminoData green;
+    //[SerializeField] private TetraminoData magenta;
+    //[SerializeField] private TetraminoData purple;
+    //[SerializeField] private TetraminoData red;
+    //[SerializeField] private TetraminoData turquoise;
+    //[SerializeField] private TetraminoData yellow;
 
-    private Tetramino[,] grid;
+    private TetraminoData[,] grid;
     private int offsetX;
     private int offsetY;
 
     void Awake()
     {
-        grid = new Tetramino[width, height];
+        grid = new TetraminoData[width, height];
         offsetX = -width / 2;
         offsetY = -height / 2;
     }
@@ -42,7 +42,7 @@ public class Board : MonoBehaviour
         for (int y = 0; y < height; y++)
             for (int x = 0; x < width; x++)
             {
-                Tile tile = grid[x, y] == null ? empty : grid[x, y].GetTile();
+                Tile tile = grid[x, y] == null ? empty : grid[x, y].Tile;
                 tilemap.SetTile(new Vector3Int(x + offsetX, y + offsetY, 0), tile);
             }
     }
