@@ -1,24 +1,25 @@
 using System;
 using UnityEngine;
 
-public class Tetramino : MonoBehaviour
+public class Tetramino
 {
     public TetraminoData data;
-    private Vector2Int[] rotation;
+    public Vector2Int[] Rotation { get; private set; }
 
-    private void Awake()
+    public Tetramino(TetraminoData newData)
     {
-        rotation = new Vector2Int[data.TetraminoShape.Length];
-        Array.Copy(data.TetraminoShape, rotation, data.TetraminoShape.Length);
+        data = newData;
+        Rotation = new Vector2Int[data.TetraminoShape.Length];
+        Array.Copy(data.TetraminoShape, Rotation, data.TetraminoShape.Length);
     }
 
     public void Rotate() // always right to left rotation
     {
-        for (int i = 0; i < rotation.Length; i++)
+        for (int i = 0; i < Rotation.Length; i++)
         {
-            int x = rotation[i].x;
-            int y = rotation[i].y;
-            rotation[i] = new Vector2Int(-y, x);
+            int x = Rotation[i].x;
+            int y = Rotation[i].y;
+            Rotation[i] = new Vector2Int(-y, x);
         }
     }
 }

@@ -152,6 +152,13 @@ MonoBehaviour:
   height: 20
   tilemap: {fileID: 1245409955}
   empty: {fileID: 11400000, guid: a3216f755b065da498d5f3fea3e7aabb, type: 2}
+  L: {fileID: 11400000, guid: f17321fad6ab6f24095b55ea12f27e91, type: 2}
+  LInverted: {fileID: 11400000, guid: be03933f428607844a6ac07d7013b54a, type: 2}
+  Z: {fileID: 11400000, guid: 4b86f67a4a6454345be0c31c7541aade, type: 2}
+  ZInverted: {fileID: 11400000, guid: eb7eb430e6c1f1a41add4840231df977, type: 2}
+  I: {fileID: 11400000, guid: a94dcbe39a1ef644e8860685caad496c, type: 2}
+  T: {fileID: 11400000, guid: 36df68d834ad4e240ada71570f159b1d, type: 2}
+  O: {fileID: 11400000, guid: 2d5ff54dd6a81c241a8936a51429fbe4, type: 2}
 --- !u!4 &281670971
 Transform:
   m_ObjectHideFlags: 0

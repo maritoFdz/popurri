@@ -3,7 +3,6 @@ using UnityEngine.Tilemaps;
 
 public class Board : MonoBehaviour
 {
-
     [Header("Board Parameters")]
     [SerializeField] private int width;
     [SerializeField] private int height;
@@ -22,6 +21,8 @@ public class Board : MonoBehaviour
     [SerializeField] private TetraminoData O;
 
     private TetraminoData[,] grid;
+
+    // this way is more intuitive to keep track of actual blocks positions taking bottom left corner as [0,0] instead of the center
     private int offsetX;
     private int offsetY;
 
@@ -45,5 +46,30 @@ public class Board : MonoBehaviour
                 Tile tile = grid[x, y] == null ? empty : grid[x, y].Tile;
                 tilemap.SetTile(new Vector3Int(x + offsetX, y + offsetY, 0), tile);
             }
+    }
+
+    private void PlaceTetramino(Tetramino tetra, int xPos, int yPos)
+    {
+        // TODO kick wall if tretramino's placement violates one of the two first conditions
+        if (CanPlace(tetra, xPos, yPos))
+            foreach (var block in tetra.Rotation)
+            {
+                int x = xPos + block.x;
+                int y = yPos + block.y;
+
+                grid[x, y] = tetra.data;
+            }
+    }
+
+    private bool CanPlace(Tetramino tetra, int xPos, int yPos)
+    {
+        foreach (var block in tetra.Rotation)
+        {
+            int x = xPos + block.x;
+            int y = yPos + block.y;
+            if (x < 0 || x >= width || y < 0 || y >= height) return false; // out of bounds
+            if (grid[x, y] != null) return false; // blocking tetramino
+        }
+        return true;
     }
 }
