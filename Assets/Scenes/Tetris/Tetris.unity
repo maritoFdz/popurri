@@ -149,6 +149,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TetrisGameManager
   controller: {fileID: 1813344637}
+  spawner: {fileID: 1968520313}
+  board: {fileID: 1245409956}
 --- !u!4 &363388583
 Transform:
   m_ObjectHideFlags: 0

@@ -10,11 +10,6 @@ public class TetraminoController : MonoBehaviour
     private float fallTimer;
     private Tetramino currentTetra;
 
-    private void Awake()
-    {
-        fallMult = 1.0f;
-    }
-
     private void Update()
     {
         if (currentTetra == null) return;
@@ -25,6 +20,12 @@ public class TetraminoController : MonoBehaviour
             fallTimer = 0;
             board.TryMoveDown(currentTetra);
         }
+    }
+
+    public void ResetController()
+    {
+        currentTetra = null;
+        fallTimer = 0;
     }
 
     public void SetCurrentTetra(Tetramino tetramino)

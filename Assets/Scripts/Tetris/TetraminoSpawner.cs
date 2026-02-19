@@ -4,8 +4,7 @@ using UnityEngine;
 public enum TetraminoType { L, LInverted, Z, ZInverted, I, T, O }
 
 public class TetraminoSpawner : MonoBehaviour
-{
-    public static TetraminoSpawner instance; 
+{ 
     [SerializeField] private Board board;
     [SerializeField] private TetraminoController controller;
 
@@ -16,10 +15,12 @@ public class TetraminoSpawner : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != null)
-            Destroy(instance);
-        instance = this;
         tetraPool = new();
+    }
+
+    public void ResetSpawner()
+    {
+        tetraPool.Clear();
     }
 
     private void GeneratePool()

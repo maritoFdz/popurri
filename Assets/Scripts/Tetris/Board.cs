@@ -26,7 +26,14 @@ public class Board : MonoBehaviour
 
     private void Start()
     {
-        TetraminoSpawner.instance.SpawnTetra();
+        DrawBoard();
+    }
+
+    public void ResetBoard()
+    {
+        for (int y = 0; y < height; y++)
+            for (int x = 0; x < width; x++)
+                grid[x, y] = null;
         DrawBoard();
     }
 
@@ -79,7 +86,7 @@ public class Board : MonoBehaviour
         }
         ClearRows();
         DrawBoard();
-        TetraminoSpawner.instance.SpawnTetra();
+        TetrisGameManager.instance.TetraPlaced(currentTetra);
     }
 
     private void ClearRows()
