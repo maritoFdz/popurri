@@ -14,6 +14,7 @@ public class TetrisGameManager : MonoBehaviour
     private int rowsCleared;
 
     [Header("Game Elements")]
+    [SerializeField] private TetrisAudioManager audioManager;
     [SerializeField] private TetraminoController controller;
     [SerializeField] private TetraminoSpawner spawner;
     [SerializeField] private Board board;
@@ -38,6 +39,7 @@ public class TetrisGameManager : MonoBehaviour
 
     private void StartGame()
     {
+        audioManager.PlayMusic();
         score = 0;
         level = 0;
         rowsCleared = 0;
@@ -67,6 +69,8 @@ public class TetrisGameManager : MonoBehaviour
     // public in game events
     public void GameOver()
     {
+        audioManager.StopPlayingMusic();
+        audioManager.PlaySound(TetrisSoundType.gameOver);
         controller.gameObject.SetActive(false);
         isGameOver = true;
     }
@@ -74,6 +78,7 @@ public class TetrisGameManager : MonoBehaviour
     public void TetraPlaced(Tetramino tetra)
     {
         // TODO stadistics
+        audioManager.PlaySound(TetrisSoundType.tetraPlaced);
         spawner.SpawnTetra();
     }
 
@@ -81,8 +86,10 @@ public class TetrisGameManager : MonoBehaviour
     {
         score += rowBaseScore + (amount - 1) * extraRowScore;
         rowsCleared += amount;
+        audioManager.PlayRowsSound(amount);
         if (rowsCleared >= levelCap)
         {
+            audioManager.PlaySound(TetrisSoundType.levelUp);
             level++;
             rowsCleared = 0;
         }
