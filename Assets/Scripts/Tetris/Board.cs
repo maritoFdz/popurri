@@ -91,9 +91,16 @@ public class Board : MonoBehaviour
 
     private void ClearRows()
     {
+        int linesCleared = 0;
         for (int y = 0; y < height; y++)
-            if (IsLineFull(y)) DropRowsAbove(y--);
+            if (IsLineFull(y))
+            {
+                DropRowsAbove(y--);
+                linesCleared++;
+            }
         DrawBoard();
+        if (linesCleared != 0)
+            TetrisGameManager.instance.RowsCleared(linesCleared);
     }
 
     private bool IsLineFull(int y)

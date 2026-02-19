@@ -7,6 +7,7 @@ public class TetraminoController : MonoBehaviour
     [SerializeField] private float fallTime;
     [SerializeField] private float constFallMult;
     private float fallMult;
+    private float levelMult;
     private float fallTimer;
     private Tetramino currentTetra;
 
@@ -15,7 +16,7 @@ public class TetraminoController : MonoBehaviour
         if (currentTetra == null) return;
         HandleInput();
         fallTimer += Time.deltaTime;
-        if (fallTimer >= fallTime * fallMult)
+        if (fallTimer >= fallTime * fallMult * levelMult)
         {
             fallTimer = 0;
             board.TryMoveDown(currentTetra);
@@ -25,6 +26,7 @@ public class TetraminoController : MonoBehaviour
     public void ResetController()
     {
         currentTetra = null;
+        levelMult = 1;
         fallTimer = 0;
     }
 

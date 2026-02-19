@@ -1,11 +1,17 @@
-using System;
 using UnityEngine;
 
 public class TetrisGameManager : MonoBehaviour
 {
     public static TetrisGameManager instance;
 
+    private const int levelCap = 10;
+    private const int rowBaseScore = 100;
+    private const int extraRowScore = 200;
+
     private bool isGameOver;
+    private int score;
+    private int level;
+    private int rowsCleared;
 
     [Header("Game Elements")]
     [SerializeField] private TetraminoController controller;
@@ -32,6 +38,9 @@ public class TetrisGameManager : MonoBehaviour
 
     private void StartGame()
     {
+        score = 0;
+        level = 0;
+        rowsCleared = 0;
         SetBoard();
         SetController();
         SetSpawner();
@@ -64,7 +73,18 @@ public class TetrisGameManager : MonoBehaviour
 
     public void TetraPlaced(Tetramino tetra)
     {
-        // TODO score thing and stadistics
+        // TODO stadistics
         spawner.SpawnTetra();
+    }
+
+    public void RowsCleared(int amount)
+    {
+        score += rowBaseScore + (amount - 1) * extraRowScore;
+        rowsCleared += amount;
+        if (rowsCleared >= levelCap)
+        {
+            level++;
+            rowsCleared = 0;
+        }
     }
 }
