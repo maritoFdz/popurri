@@ -34,9 +34,9 @@ public class TetraminoController : MonoBehaviour
 
     private void HandleInput()
     {
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
             board.TryMoveHorizontal(currentTetra, -1);
-        else if (Input.GetKey(KeyCode.RightArrow))
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
             board.TryMoveHorizontal(currentTetra, 1);
         else if (Input.GetKeyDown(KeyCode.Return))
             board.TryRotate(currentTetra);

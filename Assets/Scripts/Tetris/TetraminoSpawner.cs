@@ -24,8 +24,10 @@ public class TetraminoSpawner : MonoBehaviour
 
     private void GeneratePool()
     {
+        Vector2Int spawnPoint = board.GetBoardDimensions();
+        spawnPoint.x /= 2; // spawn in half
         foreach (var tetraData in data)
-            tetraPool.Add(new Tetramino(tetraData, board.GetBoardDimensions()));
+            tetraPool.Add(new Tetramino(tetraData, spawnPoint));
     }
 
     public void SpawnTetra()

@@ -32,7 +32,7 @@ public class Board : MonoBehaviour
 
     public Vector2Int GetBoardDimensions()
     {
-        return new(width / 2, height - 1);
+        return new(width, height);
     }
 
     public void TryMoveDown(Tetramino currentTetra)
@@ -79,7 +79,6 @@ public class Board : MonoBehaviour
         }
         ClearRows();
         DrawBoard();
-        DrawTetra(currentTetra);
         TetraminoSpawner.instance.SpawnTetra();
     }
 
@@ -87,23 +86,23 @@ public class Board : MonoBehaviour
     {
         for (int y = 0; y < height; y++)
             if (IsLineFull(y)) DropRowsAbove(y--);
+        DrawBoard();
     }
 
     private bool IsLineFull(int y)
     {
         for (int x = 0; x < width; x++)
-            if (grid[x, y] == null)
-                return false;
+            if (grid[x, y] == null) return false;
         return true;
     }
 
     private void DropRowsAbove(int row)
     {
         for (int y = row; y < height - 1; y++)
-        {
             for (int x = 0; x < width; x++)
                 grid[x, y] = grid[x, y + 1];
-        }
+
+        // Clean last row
         for (int x = 0; x < width; x++)
             grid[x, height - 1] = null;
     }
@@ -129,11 +128,6 @@ public class Board : MonoBehaviour
         }
     }
 
-    private void SetTileInGrid(int x, int y, Tile tile)
-    {
-        tilemap.SetTile(new Vector3Int(x + offsetX, y + offsetY, 0), tile);
-    }
-
     private bool CanPlace(Tetramino tetra, int xPos, int yPos)
     {
         foreach (var block in tetra.Rotation)
@@ -144,5 +138,10 @@ public class Board : MonoBehaviour
             if (grid[x, y] != null) return false; // blocking tetramino
         }
         return true;
+    }
+
+    private void SetTileInGrid(int x, int y, Tile tile)
+    {
+        tilemap.SetTile(new Vector3Int(x + offsetX, y + offsetY, 0), tile);
     }
 }

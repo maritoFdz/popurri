@@ -17,7 +17,7 @@ public class Tetramino
 
     public void Rotate() // always right to left rotation
     {
-        if (this.data.type == TetraminoType.O) return;
+        if (data.type == TetraminoType.O) return;
         for (int i = 0; i < Rotation.Length; i++)
         {
             int x = Rotation[i].x;
