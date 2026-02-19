@@ -7,6 +7,7 @@ public class TetraminoSpawner : MonoBehaviour
 {
     public static TetraminoSpawner instance; 
     [SerializeField] private Board board;
+    [SerializeField] private TetraminoController controller;
 
     [Header("Tetramino Data")]
     [SerializeField] private TetraminoData[] data;
@@ -32,7 +33,7 @@ public class TetraminoSpawner : MonoBehaviour
         if (tetraPool.Count == 0)
             GeneratePool();
         int index = Random.Range(0, tetraPool.Count);
-        board.SetCurrentTetra(tetraPool[index]);
+        controller.SetCurrentTetra(tetraPool[index]);
         tetraPool.RemoveAt(index);
     }
 }
