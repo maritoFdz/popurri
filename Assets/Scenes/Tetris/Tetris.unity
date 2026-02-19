@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3ab3f01d63a1014b851c8b6654f3655, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TetrisGameManager
+  controller: {fileID: 1813344637}
 --- !u!4 &363388583
 Transform:
   m_ObjectHideFlags: 0

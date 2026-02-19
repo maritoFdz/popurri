@@ -128,7 +128,7 @@ public class Board : MonoBehaviour
         }
     }
 
-    private bool CanPlace(Tetramino tetra, int xPos, int yPos)
+    public bool CanPlace(Tetramino tetra, int xPos, int yPos)
     {
         foreach (var block in tetra.Rotation)
         {

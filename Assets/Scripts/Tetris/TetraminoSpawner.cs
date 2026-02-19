@@ -35,7 +35,13 @@ public class TetraminoSpawner : MonoBehaviour
         if (tetraPool.Count == 0)
             GeneratePool();
         int index = Random.Range(0, tetraPool.Count);
-        controller.SetCurrentTetra(tetraPool[index]);
-        tetraPool.RemoveAt(index);
+        Tetramino newTetra = tetraPool[index];
+        if (board.CanPlace(newTetra, newTetra.pos.x, newTetra.pos.y - 1))
+        {
+            controller.SetCurrentTetra(newTetra);
+            tetraPool.RemoveAt(index);
+        }
+        else
+            TetrisGameManager.instance.GameOver();
     }
 }
