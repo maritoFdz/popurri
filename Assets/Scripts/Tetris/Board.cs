@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class Board : MonoBehaviour
 {
@@ -10,9 +12,6 @@ public class Board : MonoBehaviour
     [Header("Tilemap info")]
     [SerializeField] private Tilemap tilemap;
     [SerializeField] private Tile empty;
-
-
-
 
     [SerializeField] private float fallTime;
     private float fallMultiplier;
@@ -61,8 +60,25 @@ public class Board : MonoBehaviour
             TryMoveHorizontal(currentTetra, -1);
         else if (Input.GetKeyDown(KeyCode.RightArrow))
             TryMoveHorizontal(currentTetra, 1);
+        else if (Input.GetKeyDown(KeyCode.Return))
+        {
+            if (CanRotate(currentTetra))
+            {
+                currentTetra.Rotate();
+                DrawBoard();
+            }
+        }
+            fallMultiplier = Input.GetKey(KeyCode.DownArrow) ? 0.1f : 1;
+    }
 
-        fallMultiplier = Input.GetKey(KeyCode.DownArrow) ? 0.1f : 1;
+    private bool CanRotate(Tetramino currentTetra)
+    {
+        Vector2Int[] original = new Vector2Int[currentTetra.Rotation.Length];
+        Array.Copy(currentTetra.Rotation, original, original.Length);
+        currentTetra.Rotate();
+        bool isValidRot = CanPlace(currentTetra, currentTetra.pos.x, currentTetra.pos.y);
+        currentTetra.Rotation = original;
+        return isValidRot;
     }
 
     private void TryMoveDown(Tetramino currentTetra)
