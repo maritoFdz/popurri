@@ -137,8 +137,34 @@ public class Board : MonoBehaviour
                 int y = yPos + block.y;
 
                 grid[x, y] = tetra.data;
+                ClearRows();
             }
         TetraminoSpawner.instance.SpawnTetra();
+    }
+
+    private void ClearRows()
+    {
+        for (int y = 0; y < height; y++)
+            if (IsLineFull(y)) DropRowsAbove(y--);
+    }
+
+    private void DropRowsAbove(int row)
+    {
+        for (int y = row ; y < height - 1; y++)
+        {
+            for (int x  = 0; x < width; x++)
+                grid[x, y] = grid[x, y + 1];
+        }
+        for (int x = 0; x < width; x++)
+            grid[x, height - 1] = null;
+    }
+
+    private bool IsLineFull(int y)
+    {
+        for (int x = 0; x < width; x++)
+            if (grid[x, y] == null)
+                return false;
+        return true;
     }
 
     public Vector2Int GetBoardDimensions()
