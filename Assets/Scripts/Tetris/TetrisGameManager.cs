@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class TetrisGameManager : MonoBehaviour
@@ -14,6 +16,13 @@ public class TetrisGameManager : MonoBehaviour
     private int level;
     private int totalRowsCleared;
     private int rowsCleared;
+    private int TTetraAmount;
+    private int LInvTetraAmount;
+    private int ZTetraAmount;
+    private int OTetraAmount;
+    private int ZInvTetraAmount;
+    private int LTetraAmount;
+    private int ITetraAmount;
 
     [Header("Game Elements")]
     [SerializeField] private TetrisUI ui;
@@ -43,18 +52,31 @@ public class TetrisGameManager : MonoBehaviour
     private void StartGame()
     {
         audioManager.PlayMusic();
-        score = 0;
-        level = 0;
-        totalRowsCleared = 0;
-        ui.SetScore(score);
-        ui.SetLevel(level);
-        ui.SetLines(totalRowsCleared);
-        rowsCleared = 0;
+        SetStartingValues();
         SetBoard();
         SetController();
         SetSpawner();
         spawner.SpawnTetra();
         isGameOver = false;
+    }
+
+    private void SetStartingValues()
+    {
+        score = 0;
+        level = 0;
+        totalRowsCleared = 0;
+        TTetraAmount = 0;
+        LInvTetraAmount = 0;
+        ZTetraAmount = 0;
+        OTetraAmount = 0;
+        ZInvTetraAmount = 0;
+        LTetraAmount = 0;
+        ITetraAmount = 0;
+        rowsCleared = 0;
+        ui.SetScore(score);
+        ui.SetLevel(level);
+        ui.SetLines(totalRowsCleared);
+        ui.SetStatistics(TTetraAmount, LInvTetraAmount, ZTetraAmount, OTetraAmount, ZInvTetraAmount, LTetraAmount, ITetraAmount);
     }
 
     private void SetSpawner()
@@ -73,6 +95,35 @@ public class TetrisGameManager : MonoBehaviour
         controller.gameObject.SetActive(true);
     }
 
+    private void AddStatistics(TetraminoType type)
+    {
+        switch (type)
+        {
+            case TetraminoType.T:
+                TTetraAmount++;
+                break;
+            case TetraminoType.LInverted:
+                LInvTetraAmount++;
+                break;
+            case TetraminoType.Z:
+                ZTetraAmount++;
+                break;
+            case TetraminoType.O:
+                OTetraAmount++;
+                break;
+            case TetraminoType.ZInverted:
+                ZInvTetraAmount++;
+                break;
+            case TetraminoType.L:
+                LTetraAmount++;
+                break;
+            case TetraminoType.I:
+                ITetraAmount++;
+                break;
+        }
+        ui.SetStatistics(TTetraAmount, LInvTetraAmount, ZTetraAmount, OTetraAmount, ZInvTetraAmount, LTetraAmount, ITetraAmount);
+    }
+
     // public in game events
     public void GameOver()
     {
@@ -84,7 +135,7 @@ public class TetrisGameManager : MonoBehaviour
 
     public void TetraPlaced(Tetramino tetra)
     {
-        // TODO stadistics
+        AddStatistics(tetra.data.type);
         audioManager.PlaySound(TetrisSoundType.tetraPlaced);
     }
 

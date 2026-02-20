@@ -6,32 +6,39 @@ public class TetrisUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private TextMeshProUGUI linesText;
-    private int score;
-    private int level;
-    private int lines;
+
+    [Header("Statistics")]
+    [SerializeField] private TextMeshProUGUI TTetraAmount;
+    [SerializeField] private TextMeshProUGUI LInvTetraAmount;
+    [SerializeField] private TextMeshProUGUI ZTetraAmount;
+    [SerializeField] private TextMeshProUGUI OTetraAmount;
+    [SerializeField] private TextMeshProUGUI ZInvTetraAmount;
+    [SerializeField] private TextMeshProUGUI LTetraAmount;
+    [SerializeField] private TextMeshProUGUI ITetraAmount;
 
     public void SetLines(int lines)
     {
-        this.lines = lines;
-        linesText.text = this.lines.ToString(); 
+        linesText.text = lines.ToString(); 
     }
 
     public void SetScore(int score)
     {
-        this.score = score;
-        scoreText.text = this.score.ToString();
+        scoreText.text = score.ToString();
     }
 
     public void SetLevel(int level)
     {
-        this.level = level;
-        levelText.text = this.level.ToString();
+        levelText.text = level.ToString();
     }
 
-    public void ResetAll()
+    public void SetStatistics(int t, int lInv, int z, int o, int zInv, int l, int i)
     {
-        score = 0;
-        level = 1;
-        lines = 0;
+        TTetraAmount.text = t.ToString();
+        LInvTetraAmount.text = lInv.ToString();
+        ZTetraAmount.text = z.ToString();
+        OTetraAmount.text = o.ToString();
+        ZInvTetraAmount.text = zInv.ToString();
+        LTetraAmount.text = l.ToString();
+        ITetraAmount.text = i.ToString();
     }
 }
