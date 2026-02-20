@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -45,11 +47,13 @@ public class Board : MonoBehaviour
     public void TryMoveDown(Tetramino currentTetra)
     {
         if (CanPlace(currentTetra, currentTetra.pos.x, currentTetra.pos.y - 1))
+        {
             currentTetra.pos.y--;
+            DrawBoard();
+            DrawTetra(currentTetra);
+        }
         else
             PlaceTetramino(currentTetra, currentTetra.pos.x, currentTetra.pos.y);
-        DrawBoard();
-        DrawTetra(currentTetra);
     }
 
     public void TryMoveHorizontal(Tetramino currentTetra, int direction)
@@ -84,23 +88,20 @@ public class Board : MonoBehaviour
             int y = yPos + block.y;
             grid[x, y] = currentTetra.data;
         }
-        ClearRows();
-        DrawBoard();
         TetrisGameManager.instance.TetraPlaced(currentTetra);
+        DrawBoard();
+        CheckFullRows();
     }
 
-    private void ClearRows()
+    private void CheckFullRows()
     {
-        int linesCleared = 0;
+        List<int> linesClearedIndex = new();
         for (int y = 0; y < height; y++)
             if (IsLineFull(y))
             {
-                DropRowsAbove(y--);
-                linesCleared++;
+                linesClearedIndex.Add(y);
             }
-        DrawBoard();
-        if (linesCleared != 0)
-            TetrisGameManager.instance.RowsCleared(linesCleared);
+        TetrisGameManager.instance.RowsCleared(linesClearedIndex);
     }
 
     private bool IsLineFull(int y)
@@ -108,6 +109,20 @@ public class Board : MonoBehaviour
         for (int x = 0; x < width; x++)
             if (grid[x, y] == null) return false;
         return true;
+    }
+
+    public IEnumerator ClearRowsCo(List<int> rowsClearedIndex)
+    {
+        yield return StartCoroutine(DoClearAnimCo(rowsClearedIndex));
+
+        rowsClearedIndex.Sort();
+        int rowsDroped = 0;
+        foreach (var row in rowsClearedIndex)
+        {
+            DropRowsAbove(row - rowsDroped);
+            rowsDroped++;
+        }
+        DrawBoard();
     }
 
     private void DropRowsAbove(int row)
@@ -119,6 +134,21 @@ public class Board : MonoBehaviour
         // Clean last row
         for (int x = 0; x < width; x++)
             grid[x, height - 1] = null;
+    }
+
+    private IEnumerator DoClearAnimCo(List<int> rowsClearedIndex)
+    {
+        for (int x = 0; x < width/2; x++)
+        {
+            foreach (var row in rowsClearedIndex)
+            {
+                grid[width / 2 - x, row] = null;
+                grid[width / 2 + x, row] = null;
+                SetTileInGrid(width / 2 + x, row, empty);
+                SetTileInGrid(width / 2 - x, row, empty);
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 
     private void DrawBoard()

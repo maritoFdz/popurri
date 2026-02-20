@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TetrisGameManager : MonoBehaviour
@@ -84,23 +86,40 @@ public class TetrisGameManager : MonoBehaviour
     {
         // TODO stadistics
         audioManager.PlaySound(TetrisSoundType.tetraPlaced);
-        spawner.SpawnTetra();
     }
 
-    public void RowsCleared(int amount)
+    public void RowsCleared(List<int> rowsClearedIndex)
     {
+        if (rowsClearedIndex.Count == 0)
+            spawner.SpawnTetra();
+        else
+            StartCoroutine(RowsClearedCo(rowsClearedIndex));
+    }
+
+    private IEnumerator RowsClearedCo(List<int> rowsClearedIndex)
+    {
+        int amount = rowsClearedIndex.Count;
         score += rowBaseScore + (amount - 1) * extraRowScore;
         rowsCleared += amount;
-        audioManager.PlayRowsSound(amount);
         totalRowsCleared += amount;
+        audioManager.PlayRowsSound(amount);
+
+        controller.enabled = false;
+
+        yield return StartCoroutine(board.ClearRowsCo(rowsClearedIndex));
+
         if (rowsCleared >= levelCap)
         {
             audioManager.PlaySound(TetrisSoundType.levelUp);
             level++;
             rowsCleared = 0;
         }
+
         ui.SetScore(score);
         ui.SetLevel(level);
         ui.SetLines(totalRowsCleared);
+
+        spawner.SpawnTetra();
+        controller.enabled = true;
     }
 }
