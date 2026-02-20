@@ -23,6 +23,7 @@ public class TetrisGameManager : MonoBehaviour
     private int ZInvTetraAmount;
     private int LTetraAmount;
     private int ITetraAmount;
+    private Tetramino nextTetra;
 
     [Header("Game Elements")]
     [SerializeField] private TetrisUI ui;
@@ -57,7 +58,6 @@ public class TetrisGameManager : MonoBehaviour
         SetController();
         SetSpawner();
         spawner.SpawnTetra();
-        isGameOver = false;
     }
 
     private void SetStartingValues()
@@ -73,6 +73,8 @@ public class TetrisGameManager : MonoBehaviour
         LTetraAmount = 0;
         ITetraAmount = 0;
         rowsCleared = 0;
+        isGameOver = false;
+        nextTetra = null;
         ui.SetScore(score);
         ui.SetLevel(level);
         ui.SetLines(totalRowsCleared);
@@ -172,5 +174,11 @@ public class TetrisGameManager : MonoBehaviour
 
         spawner.SpawnTetra();
         controller.enabled = true;
+    }
+
+    public void SetNextTetra(Tetramino tetra)
+    {
+        this.nextTetra = tetra;
+        ui.SetNextTetra(tetra.data.ShapeVisuals);
     }
 }

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: TretaminoI
   m_EditorClassIdentifier: Assembly-CSharp::TetraminoData
   Tile: {fileID: 11400000, guid: d67c7e18f04ec4849afaf1523f84ec58, type: 2}
+  ShapeVisuals: {fileID: -5465646382484160345, guid: c1f445bea11019742a2b6a743c7fe7e6, type: 3}
   TetraminoShape:
   - {x: -1, y: 0}
   - {x: 0, y: 0}

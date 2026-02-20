@@ -5,6 +5,7 @@ using UnityEngine.Tilemaps;
 public class TetraminoData : ScriptableObject
 {
     public Tile Tile;
+    public Sprite ShapeVisuals;
     public Vector2Int[] TetraminoShape; // (0,0) will always be the shape pivot for rotation
     public TetraminoType type;
 }

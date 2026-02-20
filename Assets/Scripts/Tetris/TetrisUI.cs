@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -15,6 +16,12 @@ public class TetrisUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI ZInvTetraAmount;
     [SerializeField] private TextMeshProUGUI LTetraAmount;
     [SerializeField] private TextMeshProUGUI ITetraAmount;
+    [SerializeField] private SpriteRenderer nextTetra;
+
+    public void Awake()
+    {
+        nextTetra.sprite = null;
+    }
 
     public void SetLines(int lines)
     {
@@ -40,5 +47,10 @@ public class TetrisUI : MonoBehaviour
         ZInvTetraAmount.text = zInv.ToString();
         LTetraAmount.text = l.ToString();
         ITetraAmount.text = i.ToString();
+    }
+
+    public void SetNextTetra(Sprite nextTetra)
+    {
+        this.nextTetra.sprite = nextTetra;
     }
 }
