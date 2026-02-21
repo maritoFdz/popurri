@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class TetrisGameManager : MonoBehaviour
@@ -11,7 +9,10 @@ public class TetrisGameManager : MonoBehaviour
     private const int levelCap = 10;
     private const int rowBaseScore = 100;
     private const int extraRowScore = 200;
+    private const string tetrisHighScoreKey = "TetrisHighScore";
+
     private bool isGameOver;
+    private int highestScore;
     private int score;
     private int level;
     private int totalRowsCleared;
@@ -41,6 +42,8 @@ public class TetrisGameManager : MonoBehaviour
 
     private void Start()
     {
+        highestScore = PlayerPrefs.GetInt(tetrisHighScoreKey, 0);
+        ui.SetHighScore(highestScore);
         StartGame();
     }
 
@@ -133,6 +136,13 @@ public class TetrisGameManager : MonoBehaviour
         audioManager.PlaySound(TetrisSoundType.gameOver);
         controller.gameObject.SetActive(false);
         isGameOver = true;
+        if (score > highestScore)
+        {
+            highestScore = score;
+            PlayerPrefs.SetInt(tetrisHighScoreKey, highestScore);
+            PlayerPrefs.Save();
+        }
+        ui.SetHighScore(highestScore);
     }
 
     public void TetraPlaced(Tetramino tetra)

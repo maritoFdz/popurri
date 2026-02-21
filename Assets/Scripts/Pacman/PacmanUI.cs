@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -12,6 +13,7 @@ public class PacmanUI : MonoBehaviour
 
     public static PacmanUI instance;
 
+    [SerializeField] private TextMeshProUGUI highScoreText;
     [SerializeField] private TextMeshProUGUI playerScore;
     [SerializeField] private TextMeshProUGUI readyText;
     [SerializeField] private TextMeshProUGUI restartText;
@@ -69,5 +71,10 @@ public class PacmanUI : MonoBehaviour
             text.gameObject.SetActive(false);
             yield return new WaitForSeconds(flashTime);
         }
+    }
+
+    public void UpdateHighScore(int highScore)
+    {
+        highScoreText.text = highScore.ToString();
     }
 }

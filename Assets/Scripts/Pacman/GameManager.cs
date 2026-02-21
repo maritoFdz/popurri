@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public GameObject BottomLeft;
     public GameObject BottomRight;
 
+    public int highestScore;
     private int level;
     private int score;
     private int lifes;
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviour
     private int amountOfpellets;
     private Ghost blinky;
 
+    private const string pacmanScoreKey = "PacmanHighScore";
     private const int extraLifeCap = 10000;
     private const int fruitCap = 170;
     private const int defaultScore = 0;
@@ -39,6 +41,9 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        highestScore = PlayerPrefs.GetInt(pacmanScoreKey, 0);
+        PacmanUI.instance.UpdateHighScore(highestScore);
+
         SetGame(defaultScore, defaultLifes, defaultLevel);
         StartCoroutine(WaitMusicCo(SoundType.StartMusic));
     }
@@ -117,9 +122,18 @@ public class GameManager : MonoBehaviour
     private void SetGameOver()
     {
         isGameOver = true;
+
+        if (score > highestScore)
+        {
+            highestScore = score;
+            PlayerPrefs.SetInt(pacmanScoreKey, highestScore);
+            PlayerPrefs.Save();
+        }
+
         SetPellets();
         SetGhosts(false);
         SetPacman();
+        PacmanUI.instance.UpdateHighScore(highestScore);
         PacmanUI.instance.ShowRestartText(true);
     }
 

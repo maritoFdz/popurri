@@ -7,6 +7,7 @@ public class TetrisUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] private TextMeshProUGUI linesText;
+    [SerializeField] private TextMeshProUGUI highScoreText;
 
     [Header("Statistics")]
     [SerializeField] private TextMeshProUGUI TTetraAmount;
@@ -57,5 +58,10 @@ public class TetrisUI : MonoBehaviour
     public void SetNextTetra(Sprite nextTetra)
     {
         this.nextTetra.sprite = nextTetra;
+    }
+
+    public void SetHighScore(int value)
+    {
+        highScoreText.text = value.ToString();
     }
 }
