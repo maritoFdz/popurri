@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PacmanUI : MonoBehaviour
 {
@@ -22,6 +23,11 @@ public class PacmanUI : MonoBehaviour
     {
         if (instance != null) Destroy(instance);
         else instance = this;
+    }
+
+    public void GoBack()
+    {
+        SceneManager.LoadScene("Main Menu");
     }
 
     public void UpdateScore(int score)

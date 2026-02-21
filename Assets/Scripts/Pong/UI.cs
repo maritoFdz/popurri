@@ -1,6 +1,6 @@
 using TMPro;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class GameUI : MonoBehaviour
 {
     public static GameUI instance;
@@ -9,6 +9,11 @@ public class GameUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI aiScoreText;
     private int playerScore;
     private int aiScore;
+
+    public void GoBack()
+    {
+        SceneManager.LoadScene("Main Menu");
+    }
 
     public void UpdatePlayerScore()
         => playerScoreText.text = (++playerScore).ToString();

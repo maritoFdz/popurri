@@ -1,6 +1,6 @@
-using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TetrisUI : MonoBehaviour
 {
@@ -21,6 +21,11 @@ public class TetrisUI : MonoBehaviour
     public void Awake()
     {
         nextTetra.sprite = null;
+    }
+
+    public void GoBack()
+    {
+        SceneManager.LoadScene("Main Menu");
     }
 
     public void SetLines(int lines)
